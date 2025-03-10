@@ -17,38 +17,6 @@
         android:paddingVertical="8dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="10:31"
-            android:textColor="@android:color/black"
-            android:textSize="12sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_signal" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_wifi" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_battery" />
-        </LinearLayout>
-    </LinearLayout>
-
     <!-- App Logo/Title -->
     <TextView
         android:id="@+id/appTitle"
