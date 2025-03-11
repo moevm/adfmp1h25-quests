@@ -14,7 +14,7 @@ import com.example.questcityproject.ui.RegistrationActivity
 //import androidx.navigation.ui.setupWithNavController
 //import com.example.questcityproject.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity() {
 
 //    private lateinit var binding: ActivityMainBinding
 
@@ -25,15 +25,12 @@ class MainActivity : AppCompatActivity() {
         val enterButton: Button = findViewById(R.id.loginButton)
         val registrationButton: Button = findViewById(R.id.registerButton)
 
-        val enter = Intent(this, EnterActivity::class.java)
-        val registration = Intent(this, RegistrationActivity::class.java)
-
         enterButton.setOnClickListener {
-            startActivity(enter)
+            goToEnterPage()
         }
 
         registrationButton.setOnClickListener {
-            startActivity(registration)
+            goToRegistrationPage()
         }
 //        binding = ActivityMainBinding.inflate(layoutInflater)
 //        setContentView(binding.root)
@@ -50,5 +47,15 @@ class MainActivity : AppCompatActivity() {
 //        )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
+    }
+
+    private fun goToEnterPage() {
+        val enter = Intent(this, EnterActivity::class.java)
+        startActivity(enter)
+    }
+
+    private fun goToRegistrationPage() {
+        val registration = Intent(this, RegistrationActivity::class.java)
+        startActivity(registration)
     }
 }

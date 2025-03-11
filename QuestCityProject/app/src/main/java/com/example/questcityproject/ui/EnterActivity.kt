@@ -1,8 +1,10 @@
 package com.example.questcityproject.ui
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.questcityproject.R
 
 class EnterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,7 +14,7 @@ class EnterActivity : AppCompatActivity() {
         // Initialize views
         val loginInput: EditText = findViewById(R.id.usernameInput)
         val passwordInput: EditText = findViewById(R.id.passwordInput)
-        val nextButton = findViewById(R.id.loginButton)
+        val nextButton: Button = findViewById(R.id.loginButton)
 
         nextButton.setOnClickListener {
             val login = loginInput.text.toString()
