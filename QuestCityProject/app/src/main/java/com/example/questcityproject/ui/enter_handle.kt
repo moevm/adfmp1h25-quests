@@ -1,29 +1,22 @@
 package com.example.questcityproject.ui
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
-class RegistrationActivity : AppCompatActivity() {
-
+class EnterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.registration_screen)
+        setContentView(R.layout.login_screen)
 
         // Initialize views
-        var loginInput: EditText = findViewById(R.id.loginInput)
-        var emailInput: EditText = findViewById(R.id.emailInput)
-        var passwordInput: EditText = findViewById(R.id.passwordInput)
-        var passwordConfirmInput: EditText = findViewById(R.id.passwordConfirmInput)
-        var nextButton: Button = findViewById(R.id.nextButton)
+        val loginInput: EditText = findViewById(R.id.usernameInput)
+        val passwordInput: EditText = findViewById(R.id.passwordInput)
+        val nextButton = findViewById(R.id.loginButton)
 
         nextButton.setOnClickListener {
             val login = loginInput.text.toString()
-            val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
-            val passwordConfirm = passwordConfirmInput.text.toString()
-
 
 //            if (validateInputs(login, email, password, passwordConfirm)) {
 //                // Proceed with registration
