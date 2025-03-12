@@ -3,23 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/questListFragment">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/profileFragment"
+        android:name="com.example.questcityproject.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.questcityproject.ui.profile.MapFragment"
+        android:label="MapFragment" />
+    <fragment
+        android:id="@+id/questListFragment"
         android:name="com.example.questcityproject.ui.quest.list.QuestListFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_quest_list" />
+        android:label="fragment_quest_list"
+        tools:layout="@layout/fragment_quest_list" >
+        <action
+            android:id="@+id/action_questListFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_questListFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
 
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.questcityproject.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.questcityproject.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
 </navigation>

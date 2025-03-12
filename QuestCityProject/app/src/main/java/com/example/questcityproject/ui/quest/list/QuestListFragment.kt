@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.questcityproject.R
 import com.example.questcityproject.databinding.FragmentQuestListBinding
@@ -55,6 +55,16 @@ class QuestListFragment : Fragment() {
 //            textView.text = it
 //        }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val questsBtn: Button = view.findViewById(R.id.menu_quests)
+        val mapBtn: Button = view.findViewById(R.id.menu_map)
+        val profileBtn: Button = view.findViewById(R.id.menu_profile)
+        val controller = findNavController()
+        mapBtn.setOnClickListener{ controller.navigate(R.id.mapFragment) }
+        profileBtn.setOnClickListener{ controller.navigate(R.id.profileFragment) }
     }
 
     override fun onDestroyView() {

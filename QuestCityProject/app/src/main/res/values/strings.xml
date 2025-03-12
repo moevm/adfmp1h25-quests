@@ -20,4 +20,19 @@
     <string name="bottom_menu_quests_btn">Квесты</string>
     <string name="bottom_menu_map_btn">Карта</string>
     <string name="bottom_menu_profile_btn">Профиль</string>
+
+    <string name="username">Пользователь</string>
+    <string name="email">google@gmail.com</string>
+    <string name="visited_places">Мест посещено: 38</string>
+    <string name="active_quests">Активных квестов: 2</string>
+    <string name="achievements_got">Достижений получено: 4</string>
+    <string name="completed_quests">Квестов завершено: 4</string>
+    <string name="completed_quests_title">Завершенные квесты</string>
+
+    <string name="achievement_title">Название</string>
+    <string name="achievement_description">Описание</string>
+
+    <string name="zoom_in">+</string>
+    <string name="zoom_out">-</string>
+    <string name="no_active_quests_warning">Нет активных квестов</string>
 </resources>

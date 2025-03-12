@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfileFragment">
 
     <!-- Profile Header (same as empty state) -->
     <LinearLayout
@@ -17,14 +19,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Efremov"
+            android:text="@string/username"
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Atonimaurus@gmail.com"
+            android:text="@string/email"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
     </LinearLayout>
@@ -42,25 +44,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Мест посещено: 38" />
+            android:text="@string/visited_places" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Активных квестов: 2" />
+            android:text="@string/active_quests"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Достижений получено: 4" />
+            android:text="@string/achievements_got" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Квестов завершено: 4" />
+            android:text="@string/completed_quests" />
     </GridLayout>
 
     <!-- Achievements Grid -->
@@ -108,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="Завершенные квесты"
+        android:text="@string/completed_quests_title"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/achievementsGrid"/>
