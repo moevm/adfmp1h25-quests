@@ -1,5 +1,6 @@
 package com.example.questcityproject.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -20,11 +21,17 @@ class EnterActivity : AppCompatActivity() {
             val login = loginInput.text.toString()
             val password = passwordInput.text.toString()
 
+            goToMainPage()
 //            if (validateInputs(login, email, password, passwordConfirm)) {
 //                // Proceed with registration
 //                proceedWithRegistration(login, email, password)
 //            }
         }
+    }
+
+    private fun goToMainPage() {
+        val enter = Intent(this, MainScreenActivity::class.java)
+        startActivity(enter)
     }
 
 //    private fun validateInputs(
