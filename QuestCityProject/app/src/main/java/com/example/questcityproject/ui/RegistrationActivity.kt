@@ -11,7 +11,7 @@ class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_screen)
-
+        supportActionBar?.hide()
         // Initialize views
         var loginInput: EditText = findViewById(R.id.loginInput)
         var emailInput: EditText = findViewById(R.id.emailInput)
