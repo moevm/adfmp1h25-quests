@@ -11,6 +11,7 @@ class EnterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_screen)
+        supportActionBar?.hide()
 
         // Initialize views
         val loginInput: EditText = findViewById(R.id.usernameInput)
