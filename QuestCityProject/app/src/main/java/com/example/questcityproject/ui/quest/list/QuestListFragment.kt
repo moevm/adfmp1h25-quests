@@ -47,19 +47,19 @@ class QuestListFragment : Fragment() {
 
         var listArg = mutableListOf<QuestListBar>()
         // Инициализация списка элементов
-        listArg.add(QuestListBar(0, "Булочная №X", "Посети все пекарни Ф.Вольчека", false, 99))
-        listArg.add(QuestListBar(1, "Город мостов", "Посети все мосты Петербурга", false, 465))
-        listArg.add(QuestListBar(2, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", false, 9))
-        listArg.add(QuestListBar(3, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", false, 70))
-        listArg.add(QuestListBar(4, "Булочка с корицей", "Посети памятник булочке с корицей", false, 1))
-        listArg.add(QuestListBar(5, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", false, 1))
-        listArg.add(QuestListBar(6, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", true, 1, 0))
-        listArg.add(QuestListBar(7, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", true, 15, 3))
-        listArg.add(QuestListBar(8, "Город мостов", "Посети все мосты Петербурга", true, 465, 279))
-        listArg.add(QuestListBar(9, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", true, 9, 1))
-        listArg.add(QuestListBar(10, "Булочка с корицей", "Посети памятник булочке с корицей", false, 1))
-        listArg.add(QuestListBar(11, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", false, 96))
-        listArg.add(QuestListBar(12, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", true, 96, 12))
+        listArg.add(QuestListBar(0, "Булочная №X", "Посети все пекарни Ф.Вольчека", "fdfsdfsd",false, 99))
+        listArg.add(QuestListBar(1, "Город мостов", "Посети все мосты Петербурга", "dsfgfdsg", false, 465))
+        listArg.add(QuestListBar(2, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", "ddddddddddddddddddddddd",false, 9))
+        listArg.add(QuestListBar(3, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",false, 70))
+        listArg.add(QuestListBar(4, "Булочка с корицей", "Посети памятник булочке с корицей", "dfdsf",false, 1))
+        listArg.add(QuestListBar(5, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "d",false, 1))
+        listArg.add(QuestListBar(6, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "3242432",true, 1, 0))
+        listArg.add(QuestListBar(7, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "",true, 15, 3))
+        listArg.add(QuestListBar(8, "Город мостов", "Посети все мосты Петербурга", "",true, 465, 279))
+        listArg.add(QuestListBar(9, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", "",true, 9, 1))
+        listArg.add(QuestListBar(10, "Булочка с корицей", "Посети памятник булочке с корицей", "",false, 1))
+        listArg.add(QuestListBar(11, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",false, 96))
+        listArg.add(QuestListBar(12, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",true, 96, 12))
         questsList = listArg as List<QuestListBar>
 
         recyclerView = view.findViewById(R.id.questList)
@@ -80,6 +80,20 @@ class QuestListFragment : Fragment() {
         })
 
         noQuestsField = view.findViewById(R.id.noQuestsLabel)
+
+        adapter?.onItemClick = { quest ->
+            val bundle = Bundle()
+            bundle.putInt("id", quest.id)
+            bundle.putString("primaryName", quest.primaryName)
+            bundle.putString("secondaryName", quest.secondaryName)
+            bundle.putString("description", quest.description)
+            bundle.putBoolean("isActive", quest.isActive)
+            bundle.putInt("numPointsAll", quest.numPointsAll)
+            bundle.putInt("numPointsVisited", quest.numPointsVisited)
+            Navigation.findNavController(view).navigate(R.id.action_navigation_home_to_questElementFragment, bundle);
+
+        }
+
 
         val checkboxView: CheckBox = view.findViewById(R.id.activeQuestsCheckbox)
         checkboxView.setOnCheckedChangeListener { buttonView, isChecked ->

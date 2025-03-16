@@ -2,6 +2,7 @@ package com.example.questcityproject.ui.quest.list
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,30 +27,48 @@ class QuestListAdapter(private val items: List<QuestListBar>) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (items.size == 0) { return }
+        Log.d("QuestListAdapter", "Binding item at position: $position, items size: ${items.size}")
+
+        if (items.isEmpty() || position < 0 || position >= items.size) {
+            Log.e("QuestListAdapter", "Invalid position: $position, items size: ${items.size}")
+            return // Защита от выхода за пределы списка
+        }
+
         val item = items[position]
         holder.primaryTextView.text = item.primaryName
         holder.secondaryTextView.text = item.secondaryName
+
         if (item.isActive) {
             val progress = "${item.numPointsVisited} / ${item.numPointsAll}"
             holder.progressView.text = progress
 
             // Установка цветовой рамки
             val shapeDrawable = GradientDrawable()
-            when (position) {
-                0 -> shapeDrawable.setStroke(8, Color.RED)
-                1 -> shapeDrawable.setStroke(8, Color.YELLOW)
-                2 -> shapeDrawable.setStroke(8, Color.GREEN)
-                3 -> shapeDrawable.setStroke(8, Color.BLUE)
-                4 -> shapeDrawable.setStroke(8, Color.MAGENTA)
+            if (position < 5) { // Задаем цвета только для первых пяти элементов
+                when (position) {
+                    0 -> shapeDrawable.setStroke(8, Color.RED)
+                    1 -> shapeDrawable.setStroke(8, Color.YELLOW)
+                    2 -> shapeDrawable.setStroke(8, Color.GREEN)
+                    3 -> shapeDrawable.setStroke(8, Color.BLUE)
+                    4 -> shapeDrawable.setStroke(8, Color.MAGENTA)
+                }
             }
             shapeDrawable.setColor(Color.WHITE) // Установка цвета фона
             holder.itemView.background = shapeDrawable
         }
-        holder.itemView.setOnClickListener{
-            onItemClick?.invoke(items[position])
+
+        holder.itemView.setOnClickListener {
+            Log.d("QuestListAdapter", "Item clicked at position: $position")
+            if (position >= 0 && position < items.size) {
+                onItemClick?.invoke(items[position])
+            } else {
+                Log.e("QuestListAdapter", "Invalid click position: $position")
+            }
         }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int {
+        Log.d("QuestListAdapter", "Item count: ${items.size}")
+        return items.size
+    }
 }

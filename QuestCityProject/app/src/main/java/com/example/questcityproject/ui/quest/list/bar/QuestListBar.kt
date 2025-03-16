@@ -4,6 +4,7 @@ class QuestListBar(
     val id: Int,
     val primaryName: String,
     val secondaryName: String,
+    val description: String,
     val isActive: Boolean,
     val numPointsAll: Int,
     val numPointsVisited: Int = 0) {
