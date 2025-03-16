@@ -21,18 +21,21 @@
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="16px">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/searchTextEditor"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Выбор квеста"
+            android:hint="@string/quest_search"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -42,14 +45,14 @@
             android:padding="12dp"
             android:src="@drawable/ic_search" />
 
-    </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
 
     <!-- Active Quests Checkbox -->
     <CheckBox
         android:id="@+id/activeQuestsCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginHorizontal="16dp"
         android:text="Активные"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
