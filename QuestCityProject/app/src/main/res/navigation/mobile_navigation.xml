@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.questcityproject.ui.quest.list.QuestListFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_quest_list" />
+        tools:layout="@layout/fragment_quest_list" >
+        <action
+            android:id="@+id/action_navigation_home_to_questElementFragment"
+            app:destination="@id/questElementFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +26,9 @@
         android:name="com.example.questcityproject.ui.profile.ProfileFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/questElementFragment"
+        android:name="com.example.questcityproject.ui.questElement.QuestElementFragment"
+        android:label="fragment_quest_element"
+        tools:layout="@layout/fragment_quest_element" />
 </navigation>
