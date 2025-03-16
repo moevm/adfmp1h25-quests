@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="first_active_quest">#F24726</color>
+    <color name="second_active_quest">#FAC710</color>
+    <color name="third_active_quest">#8FD14F</color>
+    <color name="fourth_active_quest">#414BB2</color>
+    <color name="fifth_active_quest">#9510AC</color>
 </resources>

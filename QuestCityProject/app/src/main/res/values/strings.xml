@@ -20,6 +20,8 @@
     <string name="bottom_menu_quests_btn">Квесты</string>
     <string name="bottom_menu_map_btn">Карта</string>
     <string name="bottom_menu_profile_btn">Профиль</string>
+
+    <string name="no_quests_found">На данный момент у вас нет активных квестов. Вы можете сделать квест активным, открыв карточку квеста и нажав "Начать квест".</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
