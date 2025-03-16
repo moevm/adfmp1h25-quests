@@ -30,5 +30,13 @@
         android:id="@+id/questElementFragment"
         android:name="com.example.questcityproject.ui.questElement.QuestElementFragment"
         android:label="fragment_quest_element"
-        tools:layout="@layout/fragment_quest_element" />
+        tools:layout="@layout/fragment_quest_element" >
+        <action
+            android:id="@+id/action_questElementFragment_to_mapElementFragment"
+            app:destination="@id/mapElementFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapElementFragment"
+        android:name="com.example.questcityproject.ui.map.MapElementFragment"
+        android:label="MapElementFragment" />
 </navigation>

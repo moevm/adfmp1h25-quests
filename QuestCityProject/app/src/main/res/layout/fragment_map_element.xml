@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.map.MapFragment">
+    tools:context=".ui.map.MapElementFragment">
 
 
     <!-- Map Placeholder (Replace with actual Google Maps fragment) -->
@@ -48,17 +48,6 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <!-- No Active Quests Message -->
-        <TextView
-            android:id="@+id/noQuestsMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="64dp"
-            android:background="@drawable/message_background"
-            android:padding="12dp"
-            android:text="Нет активных квестов"
-            android:textColor="@android:color/black" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

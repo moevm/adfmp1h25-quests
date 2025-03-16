@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.example.questcityproject.R
 import com.example.questcityproject.databinding.FragmentQuestElementBinding
 
@@ -35,6 +36,7 @@ class QuestElementFragment : Fragment() {
         val questImage = view.findViewById<ImageView>(R.id.questImage)
         val determinateBar = view.findViewById<ProgressBar>(R.id.determinateBar)
         val actionButton: Button = view.findViewById(R.id.actionButton)
+//        val mapButton: Button = view.findViewById(R.id.mapButton)
 
         val numPointsAll = arguments?.getInt("numPointsAll")
         val numPointsVisited = arguments?.getInt("numPointsVisited")
@@ -61,6 +63,10 @@ class QuestElementFragment : Fragment() {
             isActive = if (isActive == true) false else true
             actionButton.text = if (isActive == true) "Прекратить квест" else "Начать квест"
         }
+
+//        mapButton.setOnClickListener {
+//            Navigation.findNavController(view).navigate(R.id.action_questElementFragment_to_mapElementFragment);
+//        }
 
         return view
     }
