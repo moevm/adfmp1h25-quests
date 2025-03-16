@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.questcityproject.R
 import com.example.questcityproject.databinding.FragmentQuestElementBinding
@@ -16,10 +17,10 @@ import com.example.questcityproject.databinding.FragmentQuestElementBinding
 class QuestElementFragment : Fragment() {
 
     private var _binding: FragmentQuestElementBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    // Store as a class property so it can be modified
+    private var isActive = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -36,15 +37,17 @@ class QuestElementFragment : Fragment() {
         val determinateBar = view.findViewById<ProgressBar>(R.id.determinateBar)
         val actionButton: Button = view.findViewById(R.id.actionButton)
 
-        val numPointsAll = arguments?.getInt("numPointsAll")
-        val numPointsVisited = arguments?.getInt("numPointsVisited")
-        if (numPointsVisited != null && numPointsAll != null){
-            val numPointsVisitedPercent = numPointsVisited * 100 / numPointsAll
-            determinateBar.progress = numPointsVisitedPercent
+        val numPointsAll = arguments?.getInt("numPointsAll") ?: 0
+        val numPointsVisited = arguments?.getInt("numPointsVisited") ?: 0
+
+        val numPointsVisitedPercent = if (numPointsAll > 0) {
+            numPointsVisited * 100 / numPointsAll
+        } else {
+            0
         }
+        determinateBar.progress = numPointsVisitedPercent
 
         val progress = "$numPointsVisited / $numPointsAll"
-
 
         questImage.setImageResource(R.drawable.volchek)
         questTitle.text = arguments?.getString("primaryName")
@@ -52,17 +55,72 @@ class QuestElementFragment : Fragment() {
         questDescription.text = arguments?.getString("description")
         questProgress.text = progress
 
-        var isActive = arguments?.getBoolean("isActive")
+        // Initialize isActive from arguments
+        isActive = arguments?.getBoolean("isActive") ?: false
 
-        actionButton.text = if (isActive == true) "Прекратить квест" else "Начать квест"
-
+        updateActionButtonText(actionButton)
 
         actionButton.setOnClickListener {
-            isActive = if (isActive == true) false else true
-            actionButton.text = if (isActive == true) "Прекратить квест" else "Начать квест"
+            if (!isActive) {
+                // User is trying to start a quest
+                if (true) {
+                    showTooManyQuestsDialog()
+                } else {
+                    // Start the quest
+                    isActive = true
+                    updateActionButtonText(actionButton)
+                    // Add your quest activation logic here
+                }
+            } else {
+                // User is trying to stop a quest
+                showStopQuestDialog(actionButton)
+            }
         }
 
         return view
+    }
+
+    private fun updateActionButtonText(button: Button) {
+        button.text = if (isActive) "Прекратить квест" else "Начать квест"
+    }
+
+    private fun tooMuchQuestsCheck(): Boolean {
+        // Implement your logic to check if there are too many active quests
+        // For example, query your database or shared preferences
+        // Return true if there are too many quests, false otherwise
+        return false // Placeholder, replace with actual implementation
+    }
+
+    private fun showTooManyQuestsDialog() {
+        context?.let { ctx ->
+            val dialog = AlertDialog.Builder(ctx)
+                .setMessage("Количество активных квестов не должно превышать 5!")
+                .setPositiveButton("OK", null)
+                .setCancelable(false)
+                .create()
+
+            dialog.show()
+        }
+    }
+
+    private fun showStopQuestDialog(actionButton: Button) {
+        context?.let { ctx ->
+            val dialog = AlertDialog.Builder(ctx)
+                .setMessage("Прекратить квест?")
+                .setNegativeButton("Отмена") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Прекратить") { _, _ ->
+                    // Stop the quest
+                    isActive = false
+                    updateActionButtonText(actionButton)
+                    // Add your quest deactivation logic here
+                }
+                .setCancelable(true)
+                .create()
+
+            dialog.show()
+        }
     }
 
     override fun onDestroyView() {
