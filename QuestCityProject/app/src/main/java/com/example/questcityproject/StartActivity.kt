@@ -20,6 +20,7 @@ class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.start_screen)
 
         val enterButton: Button = findViewById(R.id.loginButton)
