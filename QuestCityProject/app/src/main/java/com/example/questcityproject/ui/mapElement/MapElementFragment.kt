@@ -13,7 +13,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
-class MapFragment : Fragment() {
+class MapElementFragment : Fragment() {
 
     private lateinit var mapView: MapView
 

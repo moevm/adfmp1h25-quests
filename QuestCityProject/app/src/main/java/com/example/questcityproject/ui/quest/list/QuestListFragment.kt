@@ -56,6 +56,7 @@ class QuestListFragment : Fragment() {
         listArg.add(QuestListBar(10, "Булочка с корицей", "Посети памятник булочке с корицей", "",false, 1))
         listArg.add(QuestListBar(11, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",false, 96))
         listArg.add(QuestListBar(12, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",true, 96, 12))
+        questsList = listArg as List<QuestListBar>
 
         recyclerView = view.findViewById(R.id.questList)
         recyclerView?.layoutManager = LinearLayoutManager(context)
