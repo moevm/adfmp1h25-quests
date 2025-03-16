@@ -16,6 +16,7 @@ import com.example.questcityproject.ui.quest.list.bar.QuestListBar
 
 class ListAdapter(private val items: List<QuestListBar>) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
+    var onItemClick:((QuestListBar)->Unit)?=null
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 //        val textView: TextView = view.findViewById(R.id.textViewItem)
         val primaryTextView: TextView = view.findViewById(R.id.questTitle)
@@ -33,6 +34,9 @@ class ListAdapter(private val items: List<QuestListBar>) : RecyclerView.Adapter<
         holder.primaryTextView.text = items[position].primaryName
         holder.secondaryTextView.text = items[position].secondaryName
         holder.progressView.text = ""
+        holder.itemView.setOnClickListener{
+            onItemClick?.invoke(items[position])
+        }
     }
 
     override fun getItemCount() = items.size

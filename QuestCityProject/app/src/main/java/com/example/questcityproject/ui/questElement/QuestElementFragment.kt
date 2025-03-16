@@ -1,18 +1,16 @@
-package com.example.questcityproject.ui.profile
+package com.example.questcityproject.ui.questElement
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.questcityproject.R
-import com.example.questcityproject.databinding.FragmentUserProfileBinding
+import com.example.questcityproject.databinding.FragmentQuestElementBinding
 
-class ProfileFragment : Fragment() {
+class QuestElementFragment : Fragment() {
 
-    private var _binding: FragmentUserProfileBinding? = null
+    private var _binding: FragmentQuestElementBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,7 +21,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_user_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_quest_element, container, false)
         return view
 
 //        val notificationsViewModel =

@@ -1,28 +1,26 @@
 package com.example.questcityproject.ui
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.questcityproject.R
 import com.example.questcityproject.databinding.MainScreenActivityBinding
-import com.example.questcityproject.ui.notifications.NotificationsFragment
-import com.example.questcityproject.ui.profile.ProfileFragment
-import com.example.questcityproject.ui.quest.list.QuestListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainScreenActivity : AppCompatActivity() {
     private lateinit var binding: MainScreenActivityBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = MainScreenActivityBinding.inflate(layoutInflater)
         supportActionBar?.hide()
         setContentView(binding.root)
+
 
         val navView: BottomNavigationView = binding.navView
 
@@ -39,4 +37,5 @@ class MainScreenActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
 }

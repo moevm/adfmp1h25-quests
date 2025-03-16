@@ -5,13 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.questcityproject.R
 import com.example.questcityproject.databinding.FragmentQuestListBinding
 import com.example.questcityproject.ui.quest.list.bar.QuestListBar
+import com.example.questcityproject.ui.questElement.QuestElementFragment
 
 class QuestListFragment : Fragment() {
 
@@ -44,6 +47,14 @@ class QuestListFragment : Fragment() {
         val adapter = ListAdapter(itemList)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+
+        adapter.onItemClick = {
+            Navigation.findNavController(view).navigate(R.id.action_navigation_home_to_questElementFragment);
+//            getActivity().getSupportFragmentManager().beginTransaction()
+//            .replace(R.id.Layout_container, nextFrag, "findThisFragment")
+//            .addToBackStack(null)
+//            .commit();
+        }
 //        val questListViewModel =
 //            ViewModelProvider(this).get(QuestListViewModel::class.java)
 //
