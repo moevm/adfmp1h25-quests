@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.questcityproject.R
 import com.example.questcityproject.databinding.FragmentQuestListBinding
 import com.example.questcityproject.ui.quest.list.bar.QuestListBar
+import com.example.questcityproject.ui.questElement.QuestElementFragment
 
 class QuestListFragment : Fragment() {
 
@@ -58,6 +62,16 @@ class QuestListFragment : Fragment() {
         drawQuestsListPart(questsList)
 
         noQuestsField = view.findViewById(R.id.noQuestsLabel)
+//        val recyclerView : RecyclerView = view.findViewById(R.id.questList)
+//        val adapter = ListAdapter(itemList)
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+//        recyclerView.adapter = adapter
+//
+//        adapter.onItemClick = {
+//            Navigation.findNavController(view).navigate(R.id.action_navigation_home_to_questElementFragment);
+//
+//        }
+
 
         val checkboxView: CheckBox = view.findViewById(R.id.activeQuestsCheckbox)
         checkboxView.setOnCheckedChangeListener { buttonView, isChecked ->

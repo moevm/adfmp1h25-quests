@@ -12,6 +12,7 @@ import com.example.questcityproject.ui.quest.list.bar.QuestListBar
 
 class QuestListAdapter(private val items: List<QuestListBar>) : RecyclerView.Adapter<QuestListAdapter.ViewHolder>() {
 
+    var onItemClick:((QuestListBar)->Unit)?=null
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val primaryTextView: TextView = view.findViewById(R.id.questTitle)
         val secondaryTextView: TextView = view.findViewById(R.id.questDescription)
@@ -44,6 +45,9 @@ class QuestListAdapter(private val items: List<QuestListBar>) : RecyclerView.Ada
             }
             shapeDrawable.setColor(Color.WHITE) // Установка цвета фона
             holder.itemView.background = shapeDrawable
+        }
+        holder.itemView.setOnClickListener{
+            onItemClick?.invoke(items[position])
         }
     }
 
