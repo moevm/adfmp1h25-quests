@@ -45,11 +45,13 @@ class RegistrationActivity : AppCompatActivity() {
         errorMessage = findViewById(R.id.errorMessage)
 
         nextButton.setOnClickListener {
-            resetErrorStates()
+            showLoadingDialog()
+            performRegistration()
+            /*resetErrorStates()
             if(validateInputs()) {
                 showLoadingDialog()
                 performRegistration()
-            }
+            }*/
         }
     }
 
