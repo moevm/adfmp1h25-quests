@@ -60,5 +60,21 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/activeQuestsCheckbox" />
+        android:overScrollMode="always"
+        android:scrollbars="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/activeQuestsCheckbox"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/noQuestsLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:text="@string/no_quests_found"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/activeQuestsCheckbox"/>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
