@@ -64,17 +64,17 @@
         android:scrollbars="horizontal"
         app:layout_constraintTop_toBottomOf="@id/activeQuestsCheckbox"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="128dp">
         <TextView
             android:id="@+id/noQuestsLabel"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:visibility="gone"
             android:text="@string/no_quests_found"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/activeQuestsCheckbox"/>
-    </LinearLayout>
+            android:textAlignment="center"/>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
