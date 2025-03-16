@@ -35,7 +35,7 @@
                     android:layout_gravity="end"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="12dp"
-                    android:src="@drawable/ic_map" />
+                    android:src="@drawable/ic_map_stroked" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -77,19 +77,37 @@
                 android:layout_marginTop="16dp"
                 android:text="Lorem ipsum..." />
 
-            <TextView
-                android:id="@+id/questProgress"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="16dp"
-                android:text="0/99" />
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+                <ProgressBar
+                    android:id="@+id/determinateBar"
+                    style="@style/CustomProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:progress="25"
+                    android:layout_weight="9"/>
+                <TextView
+                    android:id="@+id/questProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:text="0" />
+
+            </LinearLayout>
+
+
 
             <Button
                 android:id="@+id/actionButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:padding="16dp"
                 android:text="Начать квест" />
 
         </LinearLayout>
