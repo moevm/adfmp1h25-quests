@@ -16,8 +16,8 @@ class EnterActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var errorMessage: TextView
 
-    private val validUsername = "demo"
-    private val validPassword = "password"
+//    private val validUsername = "demo"
+//    private val validPassword = "password"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_screen)
@@ -30,17 +30,18 @@ class EnterActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
 
-            resetErrorStates()
+//            resetErrorStates()
             val username = usernameInput.text.toString().trim()
             val password = passwordInput.text.toString()
+            goToMainPage()
 
-            if (validateCredentials(username, password)) {
-                // Successful login
-                goToMainPage()
-            } else {
-                // Show error state
-                showLoginError()
-            }
+//            if (validateCredentials(username, password)) {
+//                // Successful login
+//                goToMainPage()
+//            } else {
+//                // Show error state
+//                showLoginError()
+//            }
         }
 //            if (validateInputs(login, email, password, passwordConfirm)) {
 //                // Proceed with registration
@@ -50,26 +51,26 @@ class EnterActivity : AppCompatActivity() {
 
 
 
-private fun resetErrorStates() {
-    usernameInput.isActivated = false
-    passwordInput.isActivated = false
-    errorMessage.visibility = View.GONE
-}
-
-private fun validateCredentials(username: String, password: String): Boolean {
-    // In a real app, you would check against a database or API
-    return username == validUsername && password == validPassword
-}
-
-private fun showLoginError() {
-    // Set red borders
-    usernameInput.isActivated = true
-    passwordInput.isActivated = true
-
-    // Show error message
-    errorMessage.text = "Неправильный логин или пароль"
-    errorMessage.visibility = View.VISIBLE
-}
+//private fun resetErrorStates() {
+//    usernameInput.isActivated = false
+//    passwordInput.isActivated = false
+//    errorMessage.visibility = View.GONE
+//}
+//
+//private fun validateCredentials(username: String, password: String): Boolean {
+//    // In a real app, you would check against a database or API
+//    return username == validUsername && password == validPassword
+//}
+//
+//private fun showLoginError() {
+//    // Set red borders
+//    usernameInput.isActivated = true
+//    passwordInput.isActivated = true
+//
+//    // Show error message
+//    errorMessage.text = "Неправильный логин или пароль"
+//    errorMessage.visibility = View.VISIBLE
+//}
 
 private fun goToMainPage(){
     val enter = Intent(this, MainScreenActivity::class.java)
