@@ -47,19 +47,27 @@ class QuestListFragment : Fragment() {
 
         var listArg = mutableListOf<QuestListBar>()
         // Инициализация списка элементов
-        listArg.add(QuestListBar(0, "Булочная №X", "Посети все пекарни Ф.Вольчека", "fdfsdfsd",false, 99))
-        listArg.add(QuestListBar(1, "Город мостов", "Посети все мосты Петербурга", "dsfgfdsg", false, 465))
-        listArg.add(QuestListBar(2, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", "ddddddddddddddddddddddd",false, 9))
-        listArg.add(QuestListBar(3, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",false, 70))
-        listArg.add(QuestListBar(4, "ЛЭТИ", "Посети ЛЭТИ", "",false, 1))
-        listArg.add(QuestListBar(5, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "d",false, 1))
-        listArg.add(QuestListBar(6, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "3242432",true, 1, 0))
-        listArg.add(QuestListBar(7, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "",true, 15, 3))
-        listArg.add(QuestListBar(8, "Город мостов", "Посети все мосты Петербурга", "",true, 465, 279))
-        listArg.add(QuestListBar(9, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", "",true, 9, 1))
-        listArg.add(QuestListBar(10, "Булочка с корицей", "Посети памятник булочке с корицей", "",false, 1))
-        listArg.add(QuestListBar(11, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",false, 96))
-        listArg.add(QuestListBar(12, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",true, 96, 12))
+
+
+
+
+        listArg.add(QuestListBar(0, "ЛЭТИ", "Посети ЛЭТИ", "",true, 1))
+        listArg.add(QuestListBar(1, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", "",true, 9,4))
+        listArg.add(QuestListBar(2, "ИТМО", "Посети ИТМО", "",true, 1))
+        listArg.add(QuestListBar(3, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "Относительно недавно в социальных сетях стали мелькать фотографии яблока, разрезанного на две части, и замурованного в тротуарной плитке у метро Сенная площадь. В городе таких мест пока что два. Во втором случае замурована груша.",true, 2))
+        listArg.add(QuestListBar(4, "Город мостов", "Посети все разводные мосты Петербурга", "Ежегодно, с апреля по ноябрь, разводные мосты обеспечивают навигацию по реке Неве, создавая необходимые условия для судоходства. Разводка мостов Санкт-Петербурга и их наведение в соответствии с графиком — приоритетное направление работы СПб ГБУ «Мостотрест».\n" +
+                "\n" +
+                "В Санкт-Петербурге насчитывается 18 разводных мостов — тех, у которых сохранились в рабочем состоянии разводные механизмы. Из них в период навигации регулярно разводятся 12 переправ:\n" +
+                "\n" +
+                "Троицкий, Литейный, Большеохтинский, мост Александра Невского и Володарский — через реку Неву;\n" +
+                "Благовещенский и Дворцовый мосты — через Большую Неву, соединяющие Центральную часть города и Васильевский остров;;\n" +
+                "Биржевой и Тучков мосты — через Малую Неву, которые соединяют Петроградскую сторону с Васильевским островом;\n" +
+                "Сампсониевский, Гренадерский и Кантемировский  мосты — через Большую Невку.", true, 12,2))
+
+        listArg.add(QuestListBar(5, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "",false, 1))
+        listArg.add(QuestListBar(6, "Булочная №X", "Посети все пекарни Ф.Вольчека", "Булочные Ф. Вольчека\n" +
+                "— это самая известная сеть булочных в Санкт-Петербурге.\n" +
+                "Булочная №1 открылась 15 февраля 2014 года. Нашу сеть основал Филипп Вольчек, именно его год рождения указан на логотипе сети. Мы считаемся самой вкусной и притом недорогой сетью булочных.",false, 99))
         questsList = listArg as List<QuestListBar>
 
         recyclerView = view.findViewById(R.id.questList)
@@ -86,17 +94,23 @@ class QuestListFragment : Fragment() {
 //            val images = ['volcheck','volcheck','dorm','fruits','etu']
             bundle.putInt("id", quest.id)
             bundle.putString("primaryName", quest.primaryName)
-            if (quest.id == 0){
-                bundle.putString("images", "volcheck")
+            if (quest.id == 6){
+                bundle.putString("images", "volchek")
             }
-            else if (quest.id == 2){
+            else if (quest.id == 1){
                 bundle.putString("images", "dorm")
             }
             else if (quest.id == 3){
                 bundle.putString("images", "fruits")
             }
-            else if (quest.id == 4){
+            else if (quest.id == 0){
                 bundle.putString("images", "etu")
+            }
+            else if (quest.id == 2){
+                bundle.putString("images", "itmo")
+            }
+            else if (quest.id == 4){
+                bundle.putString("images", "bridge")
             }
             bundle.putString("secondaryName", quest.secondaryName)
             bundle.putString("description", quest.description)

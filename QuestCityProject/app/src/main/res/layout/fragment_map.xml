@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".ui.map.MapFragment">
 
 
@@ -60,11 +61,12 @@
 
             <Button
                 android:id="@+id/geoButton"
-                android:text=""
-                android:layout_marginBottom="94dp"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/circle_button_background" />
+                android:layout_marginBottom="94dp"
+                android:background="@drawable/circle_button_background"
+                android:text="f"
+                android:textSize="20sp" />
         </LinearLayout>
 
 

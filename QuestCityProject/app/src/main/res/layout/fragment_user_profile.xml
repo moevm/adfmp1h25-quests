@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    android:background="@android:color/white">
 
-    <!-- Profile Header -->
+    <!-- Profile Header (same as empty state) -->
     <LinearLayout
         android:id="@+id/profileHeader"
         android:layout_width="match_parent"
@@ -36,6 +35,7 @@
         android:id="@+id/statsGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
         android:columnCount="2"
         android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@id/profileHeader">
@@ -44,45 +44,97 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Мест посещено: 0" />
+            android:text="Мест посещено: 38" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Активных квестов: 0" />
+            android:text="Активных квестов: 5" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Достижений получено: 0" />
+            android:text="Достижений получено: 4" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="Квестов завершено: 0" />
+            android:text="Квестов завершено: 4" />
     </GridLayout>
 
-    <!-- Achievements Section -->
-    <TextView
-        android:id="@+id/achievementsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:padding="16dp"
-        android:text="Достижения"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statsGrid" />
-
-    <TextView
+    <!-- Achievements Grid -->
+    <GridLayout
+        android:id="@+id/achievementsGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:columnCount="2"
         android:padding="16dp"
-        android:text="Начни выполнять квесты, чтобы получать достижения!"
-        app:layout_constraintTop_toBottomOf="@id/achievementsTitle" />
+        app:layout_constraintTop_toBottomOf="@id/statsGrid">
+
+        <!-- Achievement Items -->
+        <include
+            layout="@layout/item_achievement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp" />
+
+        <include
+            layout="@layout/item_achievement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp" />
+
+        <include
+            layout="@layout/item_achievement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp" />
+
+        <include
+            layout="@layout/item_achievement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp" />
+    </GridLayout>
+
+    <!-- Completed Quests Section -->
+    <TextView
+        android:id="@+id/completedQuestsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:padding="16dp"
+        android:text="Завершенные квесты"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/achievementsGrid"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/completedQuestsList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintTop_toBottomOf="@id/completedQuestsTitle"
+        />
+
+
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@null"
+        app:menu="@menu/bottom_nav_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
