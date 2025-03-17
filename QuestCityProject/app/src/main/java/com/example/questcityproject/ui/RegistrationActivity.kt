@@ -8,8 +8,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.questcityproject.R
 import android.graphics.drawable.AnimatedVectorDrawable
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,7 +20,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class RegistrationActivity : AppCompatActivity() {
 
     private lateinit var loginInput: EditText
@@ -32,12 +29,17 @@ class RegistrationActivity : AppCompatActivity() {
     private lateinit var nextButton: Button
     private lateinit var errorMessage: TextView
 
+    // Declare these variables for the loading dialog
+    private lateinit var loadingDialog: AlertDialog
+    private lateinit var loadingAnimation: AnimatedVectorDrawable
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_screen)
         supportActionBar?.hide()
-        // Initialize views
 
+        // Initialize views
+        loginInput = findViewById(R.id.loginInput)
         emailInput = findViewById(R.id.emailInput)
         passwordInput = findViewById(R.id.passwordInput)
         passwordConfirmInput = findViewById(R.id.passwordConfirmInput)
@@ -45,13 +47,15 @@ class RegistrationActivity : AppCompatActivity() {
         errorMessage = findViewById(R.id.errorMessage)
 
         nextButton.setOnClickListener {
-            showLoadingDialog()
-            performRegistration()
-            /*resetErrorStates()
-            if(validateInputs()) {
-                showLoadingDialog()
-                performRegistration()
-            }*/
+            try {
+                resetErrorStates()
+                if(validateInputs()) {
+                    showLoadingDialog()
+                    performRegistration()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -59,6 +63,7 @@ class RegistrationActivity : AppCompatActivity() {
         val enter = Intent(this, EnterActivity::class.java)
         startActivity(enter)
     }
+
     private fun resetErrorStates() {
         loginInput.isActivated = false
         emailInput.isActivated = false
@@ -93,11 +98,13 @@ class RegistrationActivity : AppCompatActivity() {
             showError("Подтвердите пароль", passwordConfirmInput)
             return false
         }
+
         // Check if passwords match
         if (password != passwordConfirm) {
             showPasswordMismatchError()
             return false
         }
+
         // Check password length
         if (password.length < 6) {
             showError("Пароль должен содержать минимум 6 символов", passwordInput, passwordConfirmInput)
@@ -114,6 +121,7 @@ class RegistrationActivity : AppCompatActivity() {
         errorMessage.text = message
         errorMessage.visibility = View.VISIBLE
     }
+
     private fun showPasswordMismatchError() {
         // Set red borders for password fields
         passwordInput.isActivated = true
@@ -124,46 +132,61 @@ class RegistrationActivity : AppCompatActivity() {
         errorMessage.visibility = View.VISIBLE
     }
 
-    private lateinit var loadingDialog: AlertDialog
-    private lateinit var loadingAnimation: AnimatedVectorDrawable
-
-    @SuppressLint("ResourceType")
     private fun showLoadingDialog() {
-                    // Create a custom view for the loading dialog
-        val dialogView = layoutInflater.inflate(R.drawable.dialog_loading, null)
-        val loadingImageView = dialogView.findViewById<ImageView>(R.id.loadingImageView)
+        try {
+            // Create a custom view for the loading dialog
+            val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null) // Use R.layout, not R.drawable
+            val loadingImageView = dialogView.findViewById<ImageView>(R.id.loadingImageView)
 
-                    // Set up and start the loading animation
-        loadingAnimation = ContextCompat.getDrawable(this, R.drawable.loading_animation) as AnimatedVectorDrawable
-        loadingImageView.setImageDrawable(loadingAnimation)
-        loadingAnimation.start()
+            // Set up and start the loading animation
+            loadingAnimation = ContextCompat.getDrawable(this, R.drawable.loading_animation) as AnimatedVectorDrawable
+            loadingImageView.setImageDrawable(loadingAnimation)
+            loadingAnimation.start()
 
-                    // Create and show the dialog
-        loadingDialog = AlertDialog.Builder(this).setView(dialogView).setCancelable(false).create()
+            // Create and show the dialog
+            loadingDialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
 
-        loadingDialog.show()
+            loadingDialog.show()
+        } catch (e: Exception) {
+            // If there's an error with the loading dialog, just log it and continue
+            // This prevents the app from crashing if there's an issue with the dialog
+            Toast.makeText(this, "Регистрация...", Toast.LENGTH_SHORT).show()
+        }
     }
+
     private fun performRegistration() {
-                    // Use coroutines to simulate network call
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 // Simulate network delay
                 delay(2000)
 
-                // Simulate success (90% chance) or failure (10% chance)
-//                val isSuccess = (0..9).random() < 9
                 withContext(Dispatchers.Main) {
-                    loadingDialog.dismiss()
+                    try {
+                        // Only dismiss if the dialog was successfully shown
+                        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
+                            loadingDialog.dismiss()
+                        }
+                    } catch (e: Exception) {
+                        // Ignore any errors when dismissing
+                    }
+
                     showSuccessDialog()
-////                    if (isSuccess) {
-//                        showSuccessDialog()
-//                    } else {
-//                        showErrorDialog("Ошибка! Попробуйте позже!")
                 }
             }
             catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    loadingDialog.dismiss()
+                    try {
+                        // Only dismiss if the dialog was successfully shown
+                        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
+                            loadingDialog.dismiss()
+                        }
+                    } catch (e: Exception) {
+                        // Ignore any errors when dismissing
+                    }
+
                     showErrorDialog("Произошла ошибка: ${e.message}")
                 }
             }
@@ -174,11 +197,10 @@ class RegistrationActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setMessage("Регистрация прошла успешно!")
             .setPositiveButton("OK") { _, _ ->
-                            // Navigate to the next screen
                 navigateToNextScreen()
             }
-                .setCancelable(false)
-                .create()
+            .setCancelable(false)
+            .create()
 
         dialog.show()
     }
@@ -186,7 +208,6 @@ class RegistrationActivity : AppCompatActivity() {
     private fun showErrorDialog(errorMessage: String) {
         val dialog = AlertDialog.Builder(this)
             .setMessage(errorMessage)
-            .setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
             .setPositiveButton("OK", null)
             .create()
 
@@ -198,6 +219,7 @@ class RegistrationActivity : AppCompatActivity() {
     }
 }
 
+// Extension function for dialog text color
 fun AlertDialog.Builder.setTextColor(color: Int): AlertDialog.Builder {
     val dialog = this.create()
     dialog.setOnShowListener {
@@ -207,26 +229,3 @@ fun AlertDialog.Builder.setTextColor(color: Int): AlertDialog.Builder {
     }
     return this
 }
-// Extension function to set text color for AlertDialog
-
-//            if (validateInputs(login, email, password, passwordConfirm)) {
-//                // Proceed with registration
-//                proceedWithRegistration(login, email, password)
-//            }
-//        }
-//    }
-
-//    private fun validateInputs(
-//        login: String,
-//        email: String,
-//        password: String,
-//        passwordConfirm: String
-//    ): Boolean {
-//        // Add your validation logic here
-//        return true
-//    }
-//
-//    private fun proceedWithRegistration(login: String, email: String, password: String) {
-//        // Implement your registration logic here
-//        // Then navigate to the next screen
-//    }
