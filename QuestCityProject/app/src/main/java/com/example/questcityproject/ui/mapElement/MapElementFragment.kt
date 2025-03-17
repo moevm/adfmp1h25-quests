@@ -49,8 +49,13 @@ class MapElementFragment : Fragment() {
         mapView.controller.setCenter(startPoint)
 
         // Добавление маркера
-        addMarker(GeoPoint(59.973023, 30.324240),"ЛЭТИ",R.drawable.ic_map_red)
-        addMarker(GeoPoint(59.956435, 30.308726),"ИТМО",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.990980, 30.318177),"Общежитие 8",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.987299, 30.330672),"Общежития 1,2,3",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.985620, 30.331319),"Общежитие 4",R.drawable.ic_map_red)
+        addMarker(GeoPoint(60.003682, 30.287553),"Общежитие 7",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.969605, 30.299366),"Общежитие 6",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.877962, 30.242889),"Общежитие 11",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.869720, 30.309265),"МСГ",R.drawable.ic_map_red)
 
         // Инициализация кнопок
         zoomInButton = view.findViewById(R.id.zoomInButton)
