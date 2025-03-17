@@ -35,7 +35,7 @@ class QuestListFragment : Fragment() {
     private var searchTextEditor: EditText? = null
     private var questNameSearch: String = ""
 
-            private var recyclerView: RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private var adapter: QuestListAdapter? = null
 
     override fun onCreateView(
@@ -113,7 +113,7 @@ class QuestListFragment : Fragment() {
             if (isChecked) {
                 isActiveQuestsChecked = true
                 val filteredList = questsList.filter {
-                    item -> item.isActive
+                        item -> item.isActive
                 }
                 drawQuestsListPart(filteredList)
             } else {
@@ -128,7 +128,7 @@ class QuestListFragment : Fragment() {
     private fun sortQuests() {
         if (questsList.isEmpty()) return
         questsList = questsList.sortedBy {
-            item -> !item.isActive
+                item -> !item.isActive
         } as MutableList<QuestListBar>
     }
 
@@ -141,7 +141,7 @@ class QuestListFragment : Fragment() {
         if (questNameSearch.isNotEmpty()) {
             filteredList = drawableList.filter { item ->
                 item.primaryName.lowercase().contains(questNameSearch) ||
-                item.secondaryName.lowercase().contains(questNameSearch)
+                        item.secondaryName.lowercase().contains(questNameSearch)
             }
         }
         if (filteredList.isEmpty()) {
