@@ -19,14 +19,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Achievement Title"
+        android:text="Начало пути!"
         android:textAlignment="center" />
 
     <TextView
         android:id="@+id/achievementDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="Начни первый квест"
         android:textAlignment="center"
         android:textSize="12sp" />
 
