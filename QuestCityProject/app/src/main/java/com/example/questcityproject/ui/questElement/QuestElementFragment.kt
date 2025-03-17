@@ -23,7 +23,7 @@ class QuestElementFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "DiscouragedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,6 +41,7 @@ class QuestElementFragment : Fragment() {
 
         val numPointsAll = arguments?.getInt("numPointsAll")
         val numPointsVisited = arguments?.getInt("numPointsVisited")
+        val imageName = arguments?.getString("images")
         if (numPointsVisited != null && numPointsAll != null){
             val numPointsVisitedPercent = numPointsVisited * 100 / numPointsAll
             determinateBar.progress = numPointsVisitedPercent
@@ -49,7 +50,12 @@ class QuestElementFragment : Fragment() {
         val progress = "$numPointsVisited / $numPointsAll"
 
 
-        questImage.setImageResource(R.drawable.volchek)
+        if (imageName != null){
+            val resID = resources.getIdentifier(imageName, "drawable", requireContext().packageName);
+            questImage.setImageResource(resID)
+        }
+
+
         questTitle.text = arguments?.getString("primaryName")
         questSubtitle.text = arguments?.getString("secondaryName")
         questDescription.text = arguments?.getString("description")
@@ -66,6 +72,7 @@ class QuestElementFragment : Fragment() {
         }
 
         mapButton.setOnClickListener {
+
             Navigation.findNavController(view).navigate(R.id.action_questElementFragment_to_mapElementFragment);
         }
 

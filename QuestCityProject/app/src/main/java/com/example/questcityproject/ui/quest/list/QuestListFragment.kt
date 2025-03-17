@@ -51,7 +51,7 @@ class QuestListFragment : Fragment() {
         listArg.add(QuestListBar(1, "Город мостов", "Посети все мосты Петербурга", "dsfgfdsg", false, 465))
         listArg.add(QuestListBar(2, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", "ddddddddddddddddddddddd",false, 9))
         listArg.add(QuestListBar(3, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",false, 70))
-        listArg.add(QuestListBar(4, "Булочка с корицей", "Посети памятник булочке с корицей", "dfdsf",false, 1))
+        listArg.add(QuestListBar(4, "ЛЭТИ", "Посети ЛЭТИ", "",false, 1))
         listArg.add(QuestListBar(5, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "d",false, 1))
         listArg.add(QuestListBar(6, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "3242432",true, 1, 0))
         listArg.add(QuestListBar(7, "Хлебобулочный комбинат", "Посети хлебобулочный комбинат", "",true, 15, 3))
@@ -83,8 +83,21 @@ class QuestListFragment : Fragment() {
 
         adapter?.onItemClick = { quest ->
             val bundle = Bundle()
+//            val images = ['volcheck','volcheck','dorm','fruits','etu']
             bundle.putInt("id", quest.id)
             bundle.putString("primaryName", quest.primaryName)
+            if (quest.id == 0){
+                bundle.putString("images", "volcheck")
+            }
+            else if (quest.id == 2){
+                bundle.putString("images", "dorm")
+            }
+            else if (quest.id == 3){
+                bundle.putString("images", "fruits")
+            }
+            else if (quest.id == 4){
+                bundle.putString("images", "etu")
+            }
             bundle.putString("secondaryName", quest.secondaryName)
             bundle.putString("description", quest.description)
             bundle.putBoolean("isActive", quest.isActive)
