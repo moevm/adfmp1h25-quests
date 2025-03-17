@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,7 +25,7 @@ class MapElementFragment : Fragment() {
     private lateinit var mapView: MapView
     private lateinit var zoomInButton: Button
     private lateinit var zoomOutButton: Button
-    private lateinit var geoButton: Button
+    private lateinit var geoButton: ImageButton
     private lateinit var myLocationOverlay: MyLocationNewOverlay
     private lateinit var locationMarker: Marker
 
@@ -60,7 +61,7 @@ class MapElementFragment : Fragment() {
         // Инициализация кнопок
         zoomInButton = view.findViewById(R.id.zoomInButton)
         zoomOutButton = view.findViewById(R.id.zoomOutButton)
-//        geoButton = view.findViewById(R.id.geoButton)
+        geoButton = view.findViewById(R.id.geoButton)
 
         // Обработка нажатий на кнопки
         zoomInButton.setOnClickListener {
@@ -71,9 +72,9 @@ class MapElementFragment : Fragment() {
             mapView.controller.zoomOut() // Уменьшаем масштаб
         }
 
-//        geoButton.setOnClickListener {
-//            mapView.controller.animateTo(myLocationOverlay.myLocation)
-//        }
+        geoButton.setOnClickListener {
+            mapView.controller.animateTo(myLocationOverlay.myLocation)
+        }
 
         // Инициализация MyLocationNewOverlay
         myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
