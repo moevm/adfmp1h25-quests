@@ -73,7 +73,7 @@ class QuestListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.questList)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         prepareQuestList()
-        drawQuestsListPart(questsList)
+        drawQuestsListPart(questsList, view)
 
         searchTextEditor = view.findViewById(R.id.searchTextEditor)
         searchTextEditor?.addTextChangedListener(object : TextWatcher {
@@ -83,12 +83,60 @@ class QuestListFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 questNameSearch = s.toString().lowercase()
-                drawQuestsListPart(questsList )
+                drawQuestsListPart(questsList, view)
             }
         })
 
         noQuestsField = view.findViewById(R.id.noQuestsLabel)
 
+        val checkboxView: CheckBox = view.findViewById(R.id.activeQuestsCheckbox)
+        checkboxView.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                isActiveQuestsChecked = true
+                val filteredList = questsList.filter {
+                        item -> item.isActive
+                }
+                drawQuestsListPart(filteredList, view)
+            } else {
+                isActiveQuestsChecked = false
+                drawQuestsListPart(questsList, view)
+            }
+        }
+
+        return view
+    }
+
+    private fun sortQuests() {
+        if (questsList.isEmpty()) return
+        questsList = questsList.sortedBy {
+                item -> !item.isActive
+        } as MutableList<QuestListBar>
+    }
+
+    private fun prepareQuestList() {
+        sortQuests()
+    }
+
+    private fun drawQuestsListPart(drawableList: List<QuestListBar>, view: View) {
+        var filteredList = drawableList
+        if (questNameSearch.isNotEmpty()) {
+            filteredList = drawableList.filter { item ->
+                item.primaryName.lowercase().contains(questNameSearch) ||
+                        item.secondaryName.lowercase().contains(questNameSearch)
+            }
+        }
+        if (filteredList.isEmpty()) {
+            noQuestsField?.visibility = View.VISIBLE
+            noQuestsField?.text = "На данный момент у вас нет активных квестов. Вы можете сделать квест активным, открыв карточку квеста и нажав \"Начать квест\"."
+        } else {
+            noQuestsField?.visibility = View.GONE
+        }
+        adapter = QuestListAdapter(filteredList)
+        setBundle(view)
+        recyclerView?.adapter = adapter
+    }
+
+    private fun setBundle(view: View) {
         adapter?.onItemClick = { quest ->
             val bundle = Bundle()
 //            val images = ['volcheck','volcheck','dorm','fruits','etu']
@@ -118,54 +166,7 @@ class QuestListFragment : Fragment() {
             bundle.putInt("numPointsAll", quest.numPointsAll)
             bundle.putInt("numPointsVisited", quest.numPointsVisited)
             Navigation.findNavController(view).navigate(R.id.action_navigation_home_to_questElementFragment, bundle);
-
         }
-
-
-        val checkboxView: CheckBox = view.findViewById(R.id.activeQuestsCheckbox)
-        checkboxView.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                isActiveQuestsChecked = true
-                val filteredList = questsList.filter {
-                        item -> item.isActive
-                }
-                drawQuestsListPart(filteredList)
-            } else {
-                isActiveQuestsChecked = false
-                drawQuestsListPart(questsList)
-            }
-        }
-
-        return view
-    }
-
-    private fun sortQuests() {
-        if (questsList.isEmpty()) return
-        questsList = questsList.sortedBy {
-                item -> !item.isActive
-        } as MutableList<QuestListBar>
-    }
-
-    private fun prepareQuestList() {
-        sortQuests()
-    }
-
-    private fun drawQuestsListPart(drawableList: List<QuestListBar>) {
-        var filteredList = drawableList
-        if (questNameSearch.isNotEmpty()) {
-            filteredList = drawableList.filter { item ->
-                item.primaryName.lowercase().contains(questNameSearch) ||
-                        item.secondaryName.lowercase().contains(questNameSearch)
-            }
-        }
-        if (filteredList.isEmpty()) {
-            noQuestsField?.visibility = View.VISIBLE
-            noQuestsField?.text = "На данный момент у вас нет активных квестов. Вы можете сделать квест активным, открыв карточку квеста и нажав \"Начать квест\"."
-        } else {
-            noQuestsField?.visibility = View.GONE
-        }
-        adapter = QuestListAdapter(filteredList)
-        recyclerView?.adapter = adapter
     }
 
     override fun onDestroyView() {

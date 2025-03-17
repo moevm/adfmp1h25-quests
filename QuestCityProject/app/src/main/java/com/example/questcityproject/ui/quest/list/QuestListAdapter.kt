@@ -44,14 +44,15 @@ class QuestListAdapter(private val items: List<QuestListBar>) : RecyclerView.Ada
 
             // Установка цветовой рамки
             val shapeDrawable = GradientDrawable()
-            if (position < 5) { // Задаем цвета только для первых пяти элементов
-                when (position) {
-                    0 -> shapeDrawable.setStroke(8, Color.RED)
-                    1 -> shapeDrawable.setStroke(8, Color.YELLOW)
-                    2 -> shapeDrawable.setStroke(8, Color.GREEN)
-                    3 -> shapeDrawable.setStroke(8, Color.BLUE)
-                    4 -> shapeDrawable.setStroke(8, Color.MAGENTA)
-                }
+//            if (position < 5) {
+//            }
+            // Задаем цвета только для первых пяти элементов
+            when (position) {
+                0 -> shapeDrawable.setStroke(8, Color.RED)
+                1 -> shapeDrawable.setStroke(8, Color.YELLOW)
+                2 -> shapeDrawable.setStroke(8, Color.GREEN)
+                3 -> shapeDrawable.setStroke(8, Color.BLUE)
+                4 -> shapeDrawable.setStroke(8, Color.MAGENTA)
             }
             shapeDrawable.setColor(Color.WHITE) // Установка цвета фона
             holder.itemView.background = shapeDrawable
@@ -59,11 +60,12 @@ class QuestListAdapter(private val items: List<QuestListBar>) : RecyclerView.Ada
 
         holder.itemView.setOnClickListener {
             Log.d("QuestListAdapter", "Item clicked at position: $position")
-            if (position >= 0 && position < items.size) {
-                onItemClick?.invoke(items[position])
-            } else {
-                Log.e("QuestListAdapter", "Invalid click position: $position")
-            }
+            Log.d("QuestListAdapter","$onItemClick")
+            onItemClick?.invoke(item)
+//            if (position >= 0 && position < items.size) {
+//            } else {
+//                Log.e("QuestListAdapter", "Invalid click position: $position")
+//            }
         }
     }
 
