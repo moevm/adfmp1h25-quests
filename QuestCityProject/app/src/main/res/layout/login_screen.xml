@@ -44,7 +44,7 @@
         android:background="@drawable/edit_text_background_selector"
         android:drawableStart="@drawable/ic_lock"
         android:drawablePadding="12dp"
-        android:hint="@string/email_hint"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:padding="16dp"
         android:textColorHint="#757575" />
