@@ -34,6 +34,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.EnterActivity" />
+        <activity android:name=".ui.AuthorsActivity"/>
         <activity android:name=".ui.RegistrationActivity"/>
         <activity android:name=".ui.MainScreenActivity" />
     </application>

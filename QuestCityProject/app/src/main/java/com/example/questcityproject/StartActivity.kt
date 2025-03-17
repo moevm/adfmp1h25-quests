@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 //import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.questcityproject.ui.AuthorsActivity
 import com.example.questcityproject.ui.EnterActivity
 import com.example.questcityproject.ui.RegistrationActivity
 
@@ -25,6 +26,7 @@ class StartActivity : AppCompatActivity() {
 
         val enterButton: Button = findViewById(R.id.loginButton)
         val registrationButton: Button = findViewById(R.id.registerButton)
+        val aboutAuthorsButton: Button = findViewById(R.id.aboutAuthorsButton)
 
         enterButton.setOnClickListener {
             goToEnterPage()
@@ -32,6 +34,10 @@ class StartActivity : AppCompatActivity() {
 
         registrationButton.setOnClickListener {
             goToRegistrationPage()
+        }
+
+        aboutAuthorsButton.setOnClickListener {
+            goToAuthorsPage()
         }
 //        binding = ActivityMainBinding.inflate(layoutInflater)
 //        setContentView(binding.root)
@@ -58,5 +64,10 @@ class StartActivity : AppCompatActivity() {
     private fun goToRegistrationPage() {
         val registration = Intent(this, RegistrationActivity::class.java)
         startActivity(registration)
+    }
+
+    private fun goToAuthorsPage() {
+        val authors = Intent(this, AuthorsActivity::class.java)
+        startActivity(authors)
     }
 }

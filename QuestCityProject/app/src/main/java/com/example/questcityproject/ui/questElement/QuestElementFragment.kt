@@ -117,7 +117,7 @@ class QuestElementFragment : Fragment() {
     private fun showStopQuestDialog(actionButton: Button) {
         context?.let { ctx ->
             val dialog = AlertDialog.Builder(ctx)
-                .setMessage("Прекратить квест?")
+                .setMessage("Прекратить квест? Прогресс будет удален безвозвратно.")
                 .setNegativeButton("Отмена") { dialog, _ ->
                     dialog.dismiss()
                 }
