@@ -37,6 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapElementFragment"
-        android:name="com.example.questcityproject.ui.map.MapElementFragment"
-        android:label="MapElementFragment" />
+        android:name="com.example.questcityproject.ui.mapElement.MapElementFragment"
+        android:label="fragment_map_element"
+        tools:layout="@layout/fragment_map_element" />
 </navigation>
