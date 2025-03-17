@@ -53,12 +53,6 @@ class MapFragment : Fragment() {
         mapView.controller.setZoom(12.0) // Уровень масштабирования
         mapView.controller.setCenter(startPoint)
 
-        // Добавление маркера
-//        val marker = Marker(mapView)
-//        marker.position = startPoint
-//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-//        marker.title = "Санкт-Петербург"
-//        mapView.overlays.add(marker)
 
         // Инициализация кнопок
         zoomInButton = view.findViewById(R.id.zoomInButton)
@@ -119,6 +113,11 @@ class MapFragment : Fragment() {
         super.onPause()
         mapView.onPause() // Обязательно вызывайте onPause для MapView
         myLocationOverlay.disableMyLocation() // Отключаем отображение местоположения при паузе
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDetach() // Отсоединяем карту
     }
 
 

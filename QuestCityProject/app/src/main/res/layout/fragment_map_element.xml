@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.map.MapElementFragment">
+    tools:context=".ui.mapElement.MapElementFragment">
 
 
     <!-- Map Placeholder (Replace with actual Google Maps fragment) -->
@@ -46,6 +46,21 @@
                 android:background="@drawable/circle_button_background"
                 android:text="-"
                 android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/geoButton"
+                android:text=""
+                android:layout_marginBottom="94dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/circle_button_background" />
         </LinearLayout>
 
     </FrameLayout>

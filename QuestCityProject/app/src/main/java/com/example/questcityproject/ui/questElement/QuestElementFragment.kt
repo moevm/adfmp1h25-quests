@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -36,7 +37,7 @@ class QuestElementFragment : Fragment() {
         val questImage = view.findViewById<ImageView>(R.id.questImage)
         val determinateBar = view.findViewById<ProgressBar>(R.id.determinateBar)
         val actionButton: Button = view.findViewById(R.id.actionButton)
-//        val mapButton: Button = view.findViewById(R.id.mapButton)
+        val mapButton: ImageButton = view.findViewById(R.id.mapButton)
 
         val numPointsAll = arguments?.getInt("numPointsAll")
         val numPointsVisited = arguments?.getInt("numPointsVisited")
@@ -64,9 +65,9 @@ class QuestElementFragment : Fragment() {
             actionButton.text = if (isActive == true) "Прекратить квест" else "Начать квест"
         }
 
-//        mapButton.setOnClickListener {
-//            Navigation.findNavController(view).navigate(R.id.action_questElementFragment_to_mapElementFragment);
-//        }
+        mapButton.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_questElementFragment_to_mapElementFragment);
+        }
 
         return view
     }
