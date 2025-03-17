@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,7 +25,7 @@ class MapElementFragment : Fragment() {
     private lateinit var mapView: MapView
     private lateinit var zoomInButton: Button
     private lateinit var zoomOutButton: Button
-    private lateinit var geoButton: Button
+    private lateinit var geoButton: ImageButton
     private lateinit var myLocationOverlay: MyLocationNewOverlay
     private lateinit var locationMarker: Marker
 
@@ -49,13 +50,18 @@ class MapElementFragment : Fragment() {
         mapView.controller.setCenter(startPoint)
 
         // Добавление маркера
-        addMarker(GeoPoint(59.973023, 30.324240),"ЛЭТИ",R.drawable.ic_map_red)
-        addMarker(GeoPoint(59.956435, 30.308726),"ИТМО",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.990980, 30.318177),"Общежитие 8",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.987299, 30.330672),"Общежития 1,2,3",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.985620, 30.331319),"Общежитие 4",R.drawable.ic_map_red)
+        addMarker(GeoPoint(60.003682, 30.287553),"Общежитие 7",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.969605, 30.299366),"Общежитие 6",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.877962, 30.242889),"Общежитие 11",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.869720, 30.309265),"МСГ",R.drawable.ic_map_red)
 
         // Инициализация кнопок
         zoomInButton = view.findViewById(R.id.zoomInButton)
         zoomOutButton = view.findViewById(R.id.zoomOutButton)
-//        geoButton = view.findViewById(R.id.geoButton)
+        geoButton = view.findViewById(R.id.geoButton)
 
         // Обработка нажатий на кнопки
         zoomInButton.setOnClickListener {
@@ -66,9 +72,9 @@ class MapElementFragment : Fragment() {
             mapView.controller.zoomOut() // Уменьшаем масштаб
         }
 
-//        geoButton.setOnClickListener {
-//            mapView.controller.animateTo(myLocationOverlay.myLocation)
-//        }
+        geoButton.setOnClickListener {
+            mapView.controller.animateTo(myLocationOverlay.myLocation)
+        }
 
         // Инициализация MyLocationNewOverlay
         myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)

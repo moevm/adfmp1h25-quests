@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:textColor="@android:color/black"
     android:padding="16dp">
 
     <TextView
@@ -17,10 +18,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="end"
+        android:textColor="@android:color/black"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/okButton"
+            android:textColor="@android:color/black"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
