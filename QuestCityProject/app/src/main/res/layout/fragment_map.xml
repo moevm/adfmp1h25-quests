@@ -68,16 +68,16 @@
 
 
         <!-- No Active Quests Message -->
-        <TextView
-            android:id="@+id/noQuestsMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="96dp"
-            android:background="@drawable/message_background"
-            android:padding="12dp"
-            android:text="Нет активных квестов"
-            android:textColor="@android:color/black" />
+<!--        <TextView-->
+<!--            android:id="@+id/noQuestsMessage"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|center_horizontal"-->
+<!--            android:layout_marginBottom="96dp"-->
+<!--            android:background="@drawable/message_background"-->
+<!--            android:padding="12dp"-->
+<!--            android:text="Нет активных квестов"-->
+<!--            android:textColor="@android:color/black" />-->
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

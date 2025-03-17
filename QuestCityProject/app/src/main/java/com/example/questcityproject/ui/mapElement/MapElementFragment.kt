@@ -49,17 +49,8 @@ class MapElementFragment : Fragment() {
         mapView.controller.setCenter(startPoint)
 
         // Добавление маркера
-        val marker = Marker(mapView)
-        marker.position = GeoPoint(59.973023, 30.324240)
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        marker.title = "ЛЭТИ"
-        mapView.overlays.add(marker)
-
-        val marker1 = Marker(mapView)
-        marker1.position = GeoPoint(59.956435, 30.308726)
-        marker1.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        marker1.title = "ИТМО"
-        mapView.overlays.add(marker1)
+        addMarker(GeoPoint(59.973023, 30.324240),"ЛЭТИ",R.drawable.ic_map_red)
+        addMarker(GeoPoint(59.956435, 30.308726),"ИТМО",R.drawable.ic_map_red)
 
         // Инициализация кнопок
         zoomInButton = view.findViewById(R.id.zoomInButton)
@@ -131,5 +122,30 @@ class MapElementFragment : Fragment() {
             // Разрешение предоставлено, включаем отображение местоположения
             myLocationOverlay.enableMyLocation()
         }
+    }
+
+
+    // Метод для добавления маркера на карту
+    private fun addMarker(position: GeoPoint, title: String, iconResId: Int) {
+        // Создаем маркер
+        val marker = Marker(mapView)
+
+        // Устанавливаем позицию маркера
+        marker.position = position
+
+        // Устанавливаем заголовок маркера
+        marker.title = title
+
+        // Устанавливаем иконку маркера
+        val icon = ContextCompat.getDrawable(requireContext(), iconResId)
+        if (icon != null) {
+            marker.icon = icon
+        }
+
+        // Настраиваем якорь (точку привязки иконки к координатам)
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+
+        // Добавляем маркер на карту
+        mapView.overlays.add(marker)
     }
 }
