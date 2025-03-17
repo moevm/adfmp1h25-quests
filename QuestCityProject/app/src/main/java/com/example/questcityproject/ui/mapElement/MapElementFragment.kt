@@ -1,12 +1,7 @@
-package com.example.questcityproject.ui.map
+package com.example.questcityproject.ui.mapElement
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +19,7 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
-class MapFragment : Fragment() {
+class MapElementFragment : Fragment() {
 
     private lateinit var mapView: MapView
     private lateinit var zoomInButton: Button
@@ -53,42 +48,9 @@ class MapFragment : Fragment() {
         mapView.controller.setZoom(12.0) // Уровень масштабирования
         mapView.controller.setCenter(startPoint)
 
+        // Добавление маркера
         addMarker(GeoPoint(59.973023, 30.324240),"ЛЭТИ",R.drawable.ic_map_red)
-        addMarker(GeoPoint(59.990980, 30.318177),"Общежитие 8",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.987299, 30.330672),"Общежитие 1",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.987299, 30.330672),"Общежитие 2",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.987299, 30.330672),"Общежитие 3",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.985620, 30.331319),"Общежитие 4",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(60.003682, 30.287553),"Общежитие 7",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.969605, 30.299366),"Общежитие 6",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.877962, 30.242889),"Общежитие 11",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.869720, 30.309265),"МСГ",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.956435, 30.308726),"ИТМО",R.drawable.ic_map_green)
-        addMarker(GeoPoint(59.925903, 30.319857),"Яблоки",R.drawable.ic_map_blue)
-        addMarker(GeoPoint(59.938861, 30.365868),"Груши",R.drawable.ic_map_blue)
-        addMarker(GeoPoint(59.978588, 30.321836),"Кантемировский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.968102, 30.334937),"Гренадерский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.958047, 30.337359),"Сампсониевский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.949084, 30.285442),"Тучков",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.946166, 30.303431),"Биржевой",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.934892, 30.289371),"Благовещенский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.941326, 30.307736),"Дворцовый",R.drawable.ic_map_violet)
-        addMarker(GeoPoint( 59.948637, 30.327564),"Троицкий",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.952143, 30.349531),"Литейный",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.942731, 30.401357),"Большеохтинский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.926039, 30.396617),"Александра Невского",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.877711, 30.453146),"Володарский",R.drawable.ic_map_violet)
-
-
-
-
-
-
-
-
-
-
-
+        addMarker(GeoPoint(59.956435, 30.308726),"ИТМО",R.drawable.ic_map_red)
 
         // Инициализация кнопок
         zoomInButton = view.findViewById(R.id.zoomInButton)
@@ -111,14 +73,7 @@ class MapFragment : Fragment() {
         // Инициализация MyLocationNewOverlay
         myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
         myLocationOverlay.enableMyLocation() // Включаем отображение текущего местоположения
-
-
-        // Обновление позиции маркера при изменении местоположения
-        myLocationOverlay.runOnFirstFix {
-            requireActivity().runOnUiThread {
-                mapView.controller.animateTo(myLocationOverlay.myLocation)
-            }
-        }
+        
 
         // Добавляем наложение на карту
         mapView.overlays.add(myLocationOverlay)
@@ -135,7 +90,6 @@ class MapFragment : Fragment() {
                 1
             )
         }
-
 
         return view
     }
@@ -169,6 +123,7 @@ class MapFragment : Fragment() {
             myLocationOverlay.enableMyLocation()
         }
     }
+
 
     // Метод для добавления маркера на карту
     private fun addMarker(position: GeoPoint, title: String, iconResId: Int) {

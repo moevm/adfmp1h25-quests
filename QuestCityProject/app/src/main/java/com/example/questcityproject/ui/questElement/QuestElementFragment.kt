@@ -6,11 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.example.questcityproject.R
 import com.example.questcityproject.databinding.FragmentQuestElementBinding
 
@@ -19,10 +27,9 @@ class QuestElementFragment : Fragment() {
     private var _binding: FragmentQuestElementBinding? = null
     private val binding get() = _binding!!
 
-    // Store as a class property so it can be modified
-    private var isActive = false
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "DiscouragedApi")
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,9 +44,11 @@ class QuestElementFragment : Fragment() {
         val determinateBar = view.findViewById<ProgressBar>(R.id.determinateBar)
         val actionButton: Button = view.findViewById(R.id.actionButton)
 
+
         val numPointsAll = arguments?.getInt("numPointsAll") ?: 0
         val numPointsVisited = arguments?.getInt("numPointsVisited") ?: 0
-
+        val mapButton: ImageButton = view.findViewById(R.id.mapButton)
+        val imageName = arguments?.getString("images")
         val numPointsVisitedPercent = if (numPointsAll > 0) {
             numPointsVisited * 100 / numPointsAll
         } else {
@@ -49,11 +58,17 @@ class QuestElementFragment : Fragment() {
 
         val progress = "$numPointsVisited / $numPointsAll"
 
-        questImage.setImageResource(R.drawable.volchek)
+        if (imageName != null){
+            val resID = resources.getIdentifier(imageName, "drawable", requireContext().packageName);
+            questImage.setImageResource(resID)
+        }
+
         questTitle.text = arguments?.getString("primaryName")
         questSubtitle.text = arguments?.getString("secondaryName")
         questDescription.text = arguments?.getString("description")
         questProgress.text = progress
+      
+
 
         // Initialize isActive from arguments
         isActive = arguments?.getBoolean("isActive") ?: false
@@ -75,6 +90,11 @@ class QuestElementFragment : Fragment() {
                 // User is trying to stop a quest
                 showStopQuestDialog(actionButton)
             }
+        }
+        
+        mapButton.setOnClickListener {
+
+            Navigation.findNavController(view).navigate(R.id.action_questElementFragment_to_mapElementFragment);
         }
 
         return view
@@ -121,6 +141,7 @@ class QuestElementFragment : Fragment() {
 
             dialog.show()
         }
+
     }
 
     override fun onDestroyView() {
