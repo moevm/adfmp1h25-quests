@@ -6,17 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.questcityproject.R
@@ -27,9 +21,10 @@ class QuestElementFragment : Fragment() {
     private var _binding: FragmentQuestElementBinding? = null
     private val binding get() = _binding!!
 
+    // Define your own isActive variable instead of using the one from kotlinx.coroutines
+    private var isActive = false
 
     @SuppressLint("SetTextI18n", "DiscouragedApi")
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,7 +38,6 @@ class QuestElementFragment : Fragment() {
         val questImage = view.findViewById<ImageView>(R.id.questImage)
         val determinateBar = view.findViewById<ProgressBar>(R.id.determinateBar)
         val actionButton: Button = view.findViewById(R.id.actionButton)
-
 
         val numPointsAll = arguments?.getInt("numPointsAll") ?: 0
         val numPointsVisited = arguments?.getInt("numPointsVisited") ?: 0
@@ -59,7 +53,7 @@ class QuestElementFragment : Fragment() {
         val progress = "$numPointsVisited / $numPointsAll"
 
         if (imageName != null){
-            val resID = resources.getIdentifier(imageName, "drawable", requireContext().packageName);
+            val resID = resources.getIdentifier(imageName, "drawable", requireContext().packageName)
             questImage.setImageResource(resID)
         }
 
@@ -67,8 +61,6 @@ class QuestElementFragment : Fragment() {
         questSubtitle.text = arguments?.getString("secondaryName")
         questDescription.text = arguments?.getString("description")
         questProgress.text = progress
-      
-
 
         // Initialize isActive from arguments
         isActive = arguments?.getBoolean("isActive") ?: false
@@ -78,7 +70,7 @@ class QuestElementFragment : Fragment() {
         actionButton.setOnClickListener {
             if (!isActive) {
                 // User is trying to start a quest
-                if (true) {
+                if (true) { // Note: This will always show the dialog - you might want to change this condition
                     showTooManyQuestsDialog()
                 } else {
                     // Start the quest
@@ -91,10 +83,9 @@ class QuestElementFragment : Fragment() {
                 showStopQuestDialog(actionButton)
             }
         }
-        
-        mapButton.setOnClickListener {
 
-            Navigation.findNavController(view).navigate(R.id.action_questElementFragment_to_mapElementFragment);
+        mapButton.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_questElementFragment_to_mapElementFragment)
         }
 
         return view
@@ -141,7 +132,6 @@ class QuestElementFragment : Fragment() {
 
             dialog.show()
         }
-
     }
 
     override fun onDestroyView() {

@@ -35,7 +35,7 @@ class QuestListFragment : Fragment() {
     private var searchTextEditor: EditText? = null
     private var questNameSearch: String = ""
 
-            private var recyclerView: RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private var adapter: QuestListAdapter? = null
 
     override fun onCreateView(
@@ -47,7 +47,6 @@ class QuestListFragment : Fragment() {
 
         var listArg = mutableListOf<QuestListBar>()
         // Инициализация списка элементов
-
         listArg.add(QuestListBar(0, "Булочная №X", "Посети все пекарни Ф.Вольчека", "fdfsdfsd",false, 99))
         listArg.add(QuestListBar(1, "Город мостов", "Посети все мосты Петербурга", "dsfgfdsg", false, 465))
         listArg.add(QuestListBar(2, "Общежития ЛЭТИ", "Посети все общежития ЛЭТИ", "ddddddddddddddddddddddd",false, 9))
@@ -62,7 +61,6 @@ class QuestListFragment : Fragment() {
         listArg.add(QuestListBar(11, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",false, 96))
         listArg.add(QuestListBar(12, "Фрукты в плитке", "Найди все арт-объекты в тратуарной плитке", "",true, 96, 12))
         questsList = listArg as List<QuestListBar>
-
 
         recyclerView = view.findViewById(R.id.questList)
         recyclerView?.layoutManager = LinearLayoutManager(context)
@@ -85,7 +83,6 @@ class QuestListFragment : Fragment() {
 
         adapter?.onItemClick = { quest ->
             val bundle = Bundle()
-
 //            val images = ['volcheck','volcheck','dorm','fruits','etu']
             bundle.putInt("id", quest.id)
             bundle.putString("primaryName", quest.primaryName)
@@ -116,7 +113,7 @@ class QuestListFragment : Fragment() {
             if (isChecked) {
                 isActiveQuestsChecked = true
                 val filteredList = questsList.filter {
-                    item -> item.isActive
+                        item -> item.isActive
                 }
                 drawQuestsListPart(filteredList)
             } else {
@@ -131,7 +128,7 @@ class QuestListFragment : Fragment() {
     private fun sortQuests() {
         if (questsList.isEmpty()) return
         questsList = questsList.sortedBy {
-            item -> !item.isActive
+                item -> !item.isActive
         } as MutableList<QuestListBar>
     }
 
@@ -144,7 +141,7 @@ class QuestListFragment : Fragment() {
         if (questNameSearch.isNotEmpty()) {
             filteredList = drawableList.filter { item ->
                 item.primaryName.lowercase().contains(questNameSearch) ||
-                item.secondaryName.lowercase().contains(questNameSearch)
+                        item.secondaryName.lowercase().contains(questNameSearch)
             }
         }
         if (filteredList.isEmpty()) {
