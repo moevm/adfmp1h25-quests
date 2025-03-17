@@ -22,15 +22,9 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_user_profile, container, false)
-        return view
 
-//        val notificationsViewModel =
-//            ViewModelProvider(this).get(NotificationsViewModel::class.java)
-//
-//        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
-//        val root: View = binding.root
-//
-//        return root
+
+        return view
     }
 
     override fun onDestroyView() {
