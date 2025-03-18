@@ -1,23 +1,17 @@
 package com.example.questcityproject
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-//import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.widget.CheckBox
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.questcityproject.ui.AuthorsActivity
 import com.example.questcityproject.ui.EnterActivity
 import com.example.questcityproject.ui.RegistrationActivity
 
-//import androidx.navigation.findNavController
-//import androidx.navigation.ui.AppBarConfiguration
-//import androidx.navigation.ui.setupActionBarWithNavController
-//import androidx.navigation.ui.setupWithNavController
-//import com.example.questcityproject.databinding.ActivityMainBinding
-
 class StartActivity : AppCompatActivity() {
-
-//    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,21 +33,50 @@ class StartActivity : AppCompatActivity() {
         aboutAuthorsButton.setOnClickListener {
             goToAuthorsPage()
         }
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        val navView: BottomNavigationView = binding.navView
-//
-//        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-//        val appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-//            )
-//        )
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//        navView.setupWithNavController(navController)
+
+        // Check if it's the first time launch
+        if (isFirstTimeLaunch()) {
+            showFirstTimeDialog()
+        }
+    }
+
+    private fun isFirstTimeLaunch(): Boolean {
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val isFirstTime = sharedPreferences.getBoolean("is_first_time_launch", true)
+        return isFirstTime
+    }
+
+    private fun setFirstTimeLaunchComplete() {
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("is_first_time_launch", false)
+        editor.apply()
+    }
+
+    private fun showFirstTimeDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_first_time, null)
+        val safetyCheckbox = dialogView.findViewById<CheckBox>(R.id.safetyCheckbox)
+        val continueButton = dialogView.findViewById<Button>(R.id.continueButton)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        // Enable/disable continue button based on checkbox state
+        safetyCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            continueButton.isEnabled = isChecked
+            continueButton.alpha = if (isChecked) 1.0f else 0.5f
+        }
+
+        // Set continue button click listener
+        continueButton.setOnClickListener {
+            // Mark first time launch as complete
+            setFirstTimeLaunchComplete()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun goToEnterPage() {
