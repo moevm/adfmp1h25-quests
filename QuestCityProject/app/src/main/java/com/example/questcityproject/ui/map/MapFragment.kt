@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.example.questcityproject.R
 import org.osmdroid.config.Configuration
@@ -106,7 +107,11 @@ class MapFragment : Fragment() {
         // Инициализация MyLocationNewOverlay
         myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
         myLocationOverlay.enableMyLocation() // Включаем отображение текущего местоположения
+        myLocationOverlay.enableFollowLocation()
 
+        val imageDraw = ContextCompat.getDrawable(requireContext(),R.drawable.ic_my_location)!!.toBitmap()
+        myLocationOverlay.setPersonIcon(imageDraw)
+        myLocationOverlay.setDirectionIcon(imageDraw)
 
         // Обновление позиции маркера при изменении местоположения
         myLocationOverlay.runOnFirstFix {
