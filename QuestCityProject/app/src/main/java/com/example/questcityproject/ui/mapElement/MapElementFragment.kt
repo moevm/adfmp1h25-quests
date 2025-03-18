@@ -60,18 +60,10 @@ class MapElementFragment : Fragment() {
         addMarker(GeoPoint(59.869720, 30.309265),"МСГ",R.drawable.ic_map_red)
 
         // Инициализация кнопок
-        zoomInButton = view.findViewById(R.id.zoomInButton)
-        zoomOutButton = view.findViewById(R.id.zoomOutButton)
+
         geoButton = view.findViewById(R.id.geoButton)
 
-        // Обработка нажатий на кнопки
-        zoomInButton.setOnClickListener {
-            mapView.controller.zoomIn() // Увеличиваем масштаб
-        }
 
-        zoomOutButton.setOnClickListener {
-            mapView.controller.zoomOut() // Уменьшаем масштаб
-        }
 
         geoButton.setOnClickListener {
             mapView.controller.animateTo(myLocationOverlay.myLocation)

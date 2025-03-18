@@ -59,22 +59,11 @@ class MapFragment : Fragment() {
         mapView.setMultiTouchControls(true)
 
         // Initialize buttons
-        zoomInButton = view.findViewById(R.id.zoomInButton)
-        zoomOutButton = view.findViewById(R.id.zoomOutButton)
+
         geoButton = view.findViewById(R.id.geoButton)
 
         // Set up button click listeners
-        zoomInButton.setOnClickListener {
-            mapView.controller.zoomIn()
-            saveMapState()
-            updateRadiusVisibility()
-        }
 
-        zoomOutButton.setOnClickListener {
-            mapView.controller.zoomOut()
-            saveMapState()
-            updateRadiusVisibility()
-        }
 
         // Initialize location overlay
         myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
