@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Пожалуйста будте аккуратны и следите за дорогой."
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="16dp" />
+
+    <CheckBox
+        android:id="@+id/safetyCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Я буду следить за дорогой"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Продолжить"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_dark_background"
+        android:textColor="@android:color/white"
+        android:enabled="false"
+        android:alpha="0.5" />
+
+</LinearLayout>
