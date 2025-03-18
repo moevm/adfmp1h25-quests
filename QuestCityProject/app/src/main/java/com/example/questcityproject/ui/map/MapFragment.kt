@@ -1,5 +1,5 @@
 package com.example.questcityproject.ui.map
-
+import android.util.Log
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -31,6 +31,12 @@ class MapFragment : Fragment() {
     private lateinit var myLocationOverlay: MyLocationNewOverlay
     private lateinit var viewModel: MapViewModel
 
+    // List to store marker data
+    private val markerDataList = mutableListOf<MarkerData>()
+
+    // Zoom threshold for showing radius overlays
+    private val RADIUS_ZOOM_THRESHOLD = 17.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Initialize ViewModel
@@ -61,11 +67,13 @@ class MapFragment : Fragment() {
         zoomInButton.setOnClickListener {
             mapView.controller.zoomIn()
             saveMapState()
+            updateRadiusVisibility()
         }
 
         zoomOutButton.setOnClickListener {
             mapView.controller.zoomOut()
             saveMapState()
+            updateRadiusVisibility()
         }
 
         // Initialize location overlay
@@ -118,7 +126,10 @@ class MapFragment : Fragment() {
         // Restore map state from ViewModel
         restoreMapState()
 
-        // Set up map movement listener to save state
+        // Update radius visibility based on current zoom
+        updateRadiusVisibility()
+
+        // Set up map movement listener to save state and update radius visibility
         mapView.addMapListener(object : org.osmdroid.events.MapListener {
             override fun onScroll(event: org.osmdroid.events.ScrollEvent?): Boolean {
                 saveMapState()
@@ -127,11 +138,25 @@ class MapFragment : Fragment() {
 
             override fun onZoom(event: org.osmdroid.events.ZoomEvent?): Boolean {
                 saveMapState()
+                updateRadiusVisibility()
                 return true
             }
         })
 
         return view
+    }
+
+    private fun updateRadiusVisibility() {
+        val currentZoom = mapView.zoomLevelDouble
+        val showRadius = currentZoom >= RADIUS_ZOOM_THRESHOLD
+
+        // Update visibility of all radius overlays
+        for (markerData in markerDataList) {
+            markerData.radiusOverlay.setVisible(showRadius)
+        }
+
+        // Force redraw
+        mapView.invalidate()
     }
 
     private fun restoreMapState() {
@@ -150,32 +175,58 @@ class MapFragment : Fragment() {
     }
 
     private fun addAllMarkers() {
-        // Add all your markers here
-        addMarker(GeoPoint(59.973023, 30.324240),"ЛЭТИ",R.drawable.ic_map_red)
-        addMarker(GeoPoint(59.990980, 30.318177),"Общежитие 8",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(60.003682, 30.287553),"Общежитие 7",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.969605, 30.299366),"Общежитие 6",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.877962, 30.242889),"Общежитие 11",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.869720, 30.309265),"МСГ",R.drawable.ic_map_yellow)
-        addMarker(GeoPoint(59.956435, 30.308726),"ИТМО",R.drawable.ic_map_green)
-        addMarker(GeoPoint(59.925903, 30.319857),"Яблоки",R.drawable.ic_map_blue)
-        addMarker(GeoPoint(59.938861, 30.365868),"Груши",R.drawable.ic_map_blue)
-        addMarker(GeoPoint(59.958047, 30.337359),"Сампсониевский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.949084, 30.285442),"Тучков",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.946166, 30.303431),"Биржевой",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.934892, 30.289371),"Благовещенский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.941326, 30.307736),"Дворцовый",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.948637, 30.327564),"Троицкий",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.952143, 30.349531),"Литейный",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.942731, 30.401357),"Большеохтинский",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.926039, 30.396617),"Александра Невского",R.drawable.ic_map_violet)
-        addMarker(GeoPoint(59.877711, 30.453146),"Володарский",R.drawable.ic_map_violet)
+        // Clear existing markers
+        markerDataList.clear()
+
+        // Add all your markers with their corresponding radius drawables
+        addMarkerWithRadius(GeoPoint(59.973023, 30.324240), "ЛЭТИ", R.drawable.ic_map_red, R.drawable.radius_red)
+        addMarkerWithRadius(GeoPoint(59.990980, 30.318177), "Общежитие 8", R.drawable.ic_map_yellow, R.drawable.radius_yellow)
+        addMarkerWithRadius(GeoPoint(60.003682, 30.287553), "Общежитие 7", R.drawable.ic_map_yellow, R.drawable.radius_yellow)
+        addMarkerWithRadius(GeoPoint(59.969605, 30.299366), "Общежитие 6", R.drawable.ic_map_yellow, R.drawable.radius_yellow)
+        addMarkerWithRadius(GeoPoint(59.877962, 30.242889), "Общежитие 11", R.drawable.ic_map_yellow, R.drawable.radius_yellow)
+        addMarkerWithRadius(GeoPoint(59.869720, 30.309265), "МСГ", R.drawable.ic_map_yellow, R.drawable.radius_yellow)
+        addMarkerWithRadius(GeoPoint(59.956435, 30.308726), "ИТМО", R.drawable.ic_map_green, R.drawable.radius_green)
+        addMarkerWithRadius(GeoPoint(59.925903, 30.319857), "Яблоки", R.drawable.ic_map_blue, R.drawable.radius_blue)
+        addMarkerWithRadius(GeoPoint(59.938861, 30.365868), "Груши", R.drawable.ic_map_blue, R.drawable.radius_blue)
+        addMarkerWithRadius(GeoPoint(59.958047, 30.337359), "Сампсониевский", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.949084, 30.285442), "Тучков", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.946166, 30.303431), "Биржевой", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.934892, 30.289371), "Благовещенский", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.941326, 30.307736), "Дворцовый", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.948637, 30.327564), "Троицкий", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.952143, 30.349531), "Литейный", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.942731, 30.401357), "Большеохтинский", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.926039, 30.396617), "Александра Невского", R.drawable.ic_map_violet, R.drawable.radius_violet)
+        addMarkerWithRadius(GeoPoint(59.877711, 30.453146), "Володарский", R.drawable.ic_map_violet, R.drawable.radius_violet)
+    }
+
+    private fun addMarkerWithRadius(position: GeoPoint, title: String, iconResId: Int, radiusDrawableId: Int) {
+        // Create marker
+        val marker = Marker(mapView)
+        marker.position = position
+        marker.title = title
+        val icon = ContextCompat.getDrawable(requireContext(), iconResId)
+        if (icon != null) {
+            marker.icon = icon
+        }
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+
+        // Create radius overlay
+        val radiusOverlay = RadiusOverlay(requireContext(), position, radiusDrawableId)
+
+        // Add marker and radius to map
+        mapView.overlays.add(radiusOverlay)
+        mapView.overlays.add(marker)
+
+        // Store marker data for later reference
+        markerDataList.add(MarkerData(marker, radiusOverlay))
     }
 
     override fun onResume() {
         super.onResume()
         mapView.onResume()
         myLocationOverlay.enableMyLocation()
+        updateRadiusVisibility()
     }
 
     override fun onPause() {
@@ -201,16 +252,6 @@ class MapFragment : Fragment() {
         }
     }
 
-    // Method to add a marker to the map
-    private fun addMarker(position: GeoPoint, title: String, iconResId: Int) {
-        val marker = Marker(mapView)
-        marker.position = position
-        marker.title = title
-        val icon = ContextCompat.getDrawable(requireContext(), iconResId)
-        if (icon != null) {
-            marker.icon = icon
-        }
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        mapView.overlays.add(marker)
-    }
+    // Data class to store marker and its associated radius overlay
+    data class MarkerData(val marker: Marker, val radiusOverlay: RadiusOverlay)
 }
