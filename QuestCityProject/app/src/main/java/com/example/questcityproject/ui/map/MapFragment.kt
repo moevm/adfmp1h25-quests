@@ -2,11 +2,6 @@ package com.example.questcityproject.ui.map
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +11,7 @@ import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.questcityproject.R
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -32,28 +28,123 @@ class MapFragment : Fragment() {
     private lateinit var zoomOutButton: Button
     private lateinit var geoButton: ImageButton
     private lateinit var myLocationOverlay: MyLocationNewOverlay
-    private lateinit var locationMarker: Marker
+    private lateinit var viewModel: MapViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Initialize ViewModel
+        viewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Инициализация OSMDroid
+        // Initialize OSMDroid
         Configuration.getInstance().userAgentValue = requireContext().packageName
 
-        // Загрузка макета
+        // Load layout
         val view = inflater.inflate(R.layout.fragment_map, container, false)
 
-        // Инициализация MapView
+        // Initialize MapView
         mapView = view.findViewById(R.id.mapView)
-        mapView.setTileSource(TileSourceFactory.MAPNIK) // Используем стандартный источник карт
-        mapView.setMultiTouchControls(true) // Включаем мультитач-управление
+        mapView.setTileSource(TileSourceFactory.MAPNIK)
+        mapView.setMultiTouchControls(true)
 
-        // Установка начальной позиции карты (например, Санкт-Петербург)
-        val startPoint = GeoPoint(59.9343, 30.3351) // Широта и долгота
-        mapView.controller.setZoom(12.0) // Уровень масштабирования
-        mapView.controller.setCenter(startPoint)
+        // Initialize buttons
+        zoomInButton = view.findViewById(R.id.zoomInButton)
+        zoomOutButton = view.findViewById(R.id.zoomOutButton)
+        geoButton = view.findViewById(R.id.geoButton)
 
+        // Set up button click listeners
+        zoomInButton.setOnClickListener {
+            mapView.controller.zoomIn()
+            saveMapState()
+        }
+
+        zoomOutButton.setOnClickListener {
+            mapView.controller.zoomOut()
+            saveMapState()
+        }
+
+        // Initialize location overlay
+        myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
+        myLocationOverlay.enableMyLocation()
+
+        geoButton.setOnClickListener {
+            myLocationOverlay.myLocation?.let {
+                mapView.controller.animateTo(it)
+                saveMapState()
+            }
+        }
+
+        // Update position when location changes
+        myLocationOverlay.runOnFirstFix {
+            requireActivity().runOnUiThread {
+                myLocationOverlay.myLocation?.let {
+                    if (!viewModel.isMapInitialized) {
+                        mapView.controller.animateTo(it)
+                        saveMapState()
+                    }
+                }
+            }
+        }
+
+        // Add overlay to map
+        mapView.overlays.add(myLocationOverlay)
+
+        // Request location permissions
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+        }
+
+        // Add markers
+        addAllMarkers()
+
+        // Restore map state from ViewModel
+        restoreMapState()
+
+        // Set up map movement listener to save state
+        mapView.addMapListener(object : org.osmdroid.events.MapListener {
+            override fun onScroll(event: org.osmdroid.events.ScrollEvent?): Boolean {
+                saveMapState()
+                return true
+            }
+
+            override fun onZoom(event: org.osmdroid.events.ZoomEvent?): Boolean {
+                saveMapState()
+                return true
+            }
+        })
+
+        return view
+    }
+
+    private fun restoreMapState() {
+        viewModel.mapCenter.value?.let { center ->
+            viewModel.zoomLevel.value?.let { zoom ->
+                mapView.controller.setZoom(zoom)
+                mapView.controller.setCenter(center)
+            }
+        }
+    }
+
+    private fun saveMapState() {
+        val center = mapView.mapCenter as GeoPoint
+        val zoom = mapView.zoomLevelDouble
+        viewModel.saveMapState(center, zoom)
+    }
+
+    private fun addAllMarkers() {
+        // Add all your markers here
         addMarker(GeoPoint(59.973023, 30.324240),"ЛЭТИ",R.drawable.ic_map_red)
         addMarker(GeoPoint(59.990980, 30.318177),"Общежитие 8",R.drawable.ic_map_yellow)
         addMarker(GeoPoint(60.003682, 30.287553),"Общежитие 7",R.drawable.ic_map_yellow)
@@ -68,90 +159,30 @@ class MapFragment : Fragment() {
         addMarker(GeoPoint(59.946166, 30.303431),"Биржевой",R.drawable.ic_map_violet)
         addMarker(GeoPoint(59.934892, 30.289371),"Благовещенский",R.drawable.ic_map_violet)
         addMarker(GeoPoint(59.941326, 30.307736),"Дворцовый",R.drawable.ic_map_violet)
-        addMarker(GeoPoint( 59.948637, 30.327564),"Троицкий",R.drawable.ic_map_violet)
+        addMarker(GeoPoint(59.948637, 30.327564),"Троицкий",R.drawable.ic_map_violet)
         addMarker(GeoPoint(59.952143, 30.349531),"Литейный",R.drawable.ic_map_violet)
         addMarker(GeoPoint(59.942731, 30.401357),"Большеохтинский",R.drawable.ic_map_violet)
         addMarker(GeoPoint(59.926039, 30.396617),"Александра Невского",R.drawable.ic_map_violet)
         addMarker(GeoPoint(59.877711, 30.453146),"Володарский",R.drawable.ic_map_violet)
-
-
-
-
-
-
-
-
-
-
-
-
-        // Инициализация кнопок
-        zoomInButton = view.findViewById(R.id.zoomInButton)
-        zoomOutButton = view.findViewById(R.id.zoomOutButton)
-        geoButton = view.findViewById(R.id.geoButton)
-
-        // Обработка нажатий на кнопки
-        zoomInButton.setOnClickListener {
-            mapView.controller.zoomIn() // Увеличиваем масштаб
-        }
-
-        zoomOutButton.setOnClickListener {
-            mapView.controller.zoomOut() // Уменьшаем масштаб
-        }
-
-        geoButton.setOnClickListener {
-            mapView.controller.animateTo(myLocationOverlay.myLocation)
-        }
-
-        // Инициализация MyLocationNewOverlay
-        myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
-        myLocationOverlay.enableMyLocation() // Включаем отображение текущего местоположения
-
-
-        // Обновление позиции маркера при изменении местоположения
-        myLocationOverlay.runOnFirstFix {
-            requireActivity().runOnUiThread {
-                mapView.controller.animateTo(myLocationOverlay.myLocation)
-            }
-        }
-
-        // Добавляем наложение на карту
-        mapView.overlays.add(myLocationOverlay)
-
-        // Запрашиваем разрешения на доступ к геолокации
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                1
-            )
-        }
-
-
-        return view
     }
 
     override fun onResume() {
         super.onResume()
-        mapView.onResume() // Обязательно вызывайте onResume для MapView
-        myLocationOverlay.enableMyLocation() // Включаем отображение местоположения при возобновлении
+        mapView.onResume()
+        myLocationOverlay.enableMyLocation()
     }
 
     override fun onPause() {
         super.onPause()
-        mapView.onPause() // Обязательно вызывайте onPause для MapView
-        myLocationOverlay.disableMyLocation() // Отключаем отображение местоположения при паузе
+        saveMapState() // Save state when pausing
+        mapView.onPause()
+        myLocationOverlay.disableMyLocation()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mapView.onDetach() // Отсоединяем карту
+        mapView.onDetach()
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -160,32 +191,20 @@ class MapFragment : Fragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // Разрешение предоставлено, включаем отображение местоположения
             myLocationOverlay.enableMyLocation()
         }
     }
 
-    // Метод для добавления маркера на карту
+    // Method to add a marker to the map
     private fun addMarker(position: GeoPoint, title: String, iconResId: Int) {
-        // Создаем маркер
         val marker = Marker(mapView)
-
-        // Устанавливаем позицию маркера
         marker.position = position
-
-        // Устанавливаем заголовок маркера
         marker.title = title
-
-        // Устанавливаем иконку маркера
         val icon = ContextCompat.getDrawable(requireContext(), iconResId)
         if (icon != null) {
             marker.icon = icon
         }
-
-        // Настраиваем якорь (точку привязки иконки к координатам)
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-
-        // Добавляем маркер на карту
         mapView.overlays.add(marker)
     }
 }
