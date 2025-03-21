@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.questcityproject.ui.AuthorsActivity
 import com.example.questcityproject.ui.EnterActivity
 import com.example.questcityproject.ui.RegistrationActivity
+import com.example.questcityproject.data.SampleDataInitializer
 
 class StartActivity : AppCompatActivity() {
 
@@ -38,6 +39,8 @@ class StartActivity : AppCompatActivity() {
         if (isFirstTimeLaunch()) {
             showFirstTimeDialog()
         }
+
+        SampleDataInitializer.initializeSampleData(this)
     }
 
     private fun isFirstTimeLaunch(): Boolean {

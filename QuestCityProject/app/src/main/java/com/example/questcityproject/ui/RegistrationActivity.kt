@@ -1,231 +1,129 @@
 package com.example.questcityproject.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
-import com.example.questcityproject.R
-import android.graphics.drawable.AnimatedVectorDrawable
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.appcompat.app.AppCompatActivity
+import com.example.questcityproject.StartActivity
+import com.example.questcityproject.R
+import com.example.questcityproject.data.DatabaseHelper
 
 class RegistrationActivity : AppCompatActivity() {
 
-    private lateinit var loginInput: EditText
-    private lateinit var emailInput: EditText
-    private lateinit var passwordInput: EditText
-    private lateinit var passwordConfirmInput: EditText
-    private lateinit var nextButton: Button
-    private lateinit var errorMessage: TextView
-
-    // Declare these variables for the loading dialog
-    private lateinit var loadingDialog: AlertDialog
-    private lateinit var loadingAnimation: AnimatedVectorDrawable
+    private lateinit var loginEditText: EditText
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var confirmPasswordEditText: EditText
+    private lateinit var registerButton: Button
+    private lateinit var errorTextView: TextView
+    private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.registration_screen)
         supportActionBar?.hide()
+        setContentView(R.layout.registration_screen)
+
+        // Initialize database helper
+        dbHelper = DatabaseHelper(this)
 
         // Initialize views
-        loginInput = findViewById(R.id.loginInput)
-        emailInput = findViewById(R.id.emailInput)
-        passwordInput = findViewById(R.id.passwordInput)
-        passwordConfirmInput = findViewById(R.id.passwordConfirmInput)
-        nextButton = findViewById(R.id.nextButton)
-        errorMessage = findViewById(R.id.errorMessage)
+        loginEditText = findViewById(R.id.loginInput)
+        emailEditText = findViewById(R.id.emailInput)
+        passwordEditText = findViewById(R.id.passwordInput)
+        confirmPasswordEditText = findViewById(R.id.passwordConfirmInput)
+        registerButton = findViewById(R.id.nextButton)
+        errorTextView = findViewById(R.id.errorMessage)
 
-        nextButton.setOnClickListener {
-            try {
-                resetErrorStates()
-                if(validateInputs()) {
-                    showLoadingDialog()
-                    performRegistration()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
-            }
+        // Hide error message initially
+        errorTextView.visibility = View.GONE
+
+        // Set up register button click listener
+        registerButton.setOnClickListener {
+            validateAndRegister()
         }
     }
 
-    private fun goToMainPage() {
-        val enter = Intent(this, EnterActivity::class.java)
-        startActivity(enter)
-    }
+    private fun validateAndRegister() {
+        // Reset error states
+        resetErrorStates()
 
-    private fun resetErrorStates() {
-        loginInput.isActivated = false
-        emailInput.isActivated = false
-        passwordInput.isActivated = false
-        passwordConfirmInput.isActivated = false
-        errorMessage.visibility = View.GONE
-    }
+        val login = loginEditText.text.toString().trim()
+        val email = emailEditText.text.toString().trim()
+        val password = passwordEditText.text.toString().trim()
+        val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
-    private fun validateInputs(): Boolean {
-        val login = loginInput.text.toString()
-        val email = emailInput.text.toString()
-        val password = passwordInput.text.toString()
-        val passwordConfirm = passwordConfirmInput.text.toString()
-
-        // Check if fields are empty
-        if (login.isEmpty()) {
-            showError("Введите логин", loginInput)
-            return false
+        // Validate input fields
+        if (login.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            showError("Пожалуйста, заполните все поля")
+            return
         }
 
-        if (email.isEmpty()) {
-            showError("Введите email", emailInput)
-            return false
-        }
-
-        if (password.isEmpty()) {
-            showError("Введите пароль", passwordInput)
-            return false
-        }
-
-        if (passwordConfirm.isEmpty()) {
-            showError("Подтвердите пароль", passwordConfirmInput)
-            return false
+        // Validate email format
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showError("Пожалуйста, введите корректный email")
+            emailEditText.setBackgroundResource(R.drawable.edit_text_background_error)
+            return
         }
 
         // Check if passwords match
-        if (password != passwordConfirm) {
-            showPasswordMismatchError()
-            return false
+        if (password != confirmPassword) {
+            showError("Пароли не совпадают")
+            passwordEditText.setBackgroundResource(R.drawable.edit_text_background_error)
+            confirmPasswordEditText.setBackgroundResource(R.drawable.edit_text_background_error)
+            return
         }
 
-        // Check password length
-        if (password.length < 6) {
-            showError("Пароль должен содержать минимум 6 символов", passwordInput, passwordConfirmInput)
-            return false
+        // Check if login already exists
+        if (dbHelper.checkLoginExists(login)) {
+            showError("Пользователь с таким логином уже существует")
+            loginEditText.setBackgroundResource(R.drawable.edit_text_background_error)
+            return
         }
 
-        return true
-    }
+        // Check if email already exists
+        if (dbHelper.checkEmailExists(email)) {
+            showError("Пользователь с таким email уже существует")
+            emailEditText.setBackgroundResource(R.drawable.edit_text_background_error)
+            return
+        }
 
-    private fun showError(message: String, vararg fields: EditText) {
-        // Set red borders for specified fields
-        fields.forEach { it.isActivated = true }
-        // Show error message
-        errorMessage.text = message
-        errorMessage.visibility = View.VISIBLE
-    }
-
-    private fun showPasswordMismatchError() {
-        // Set red borders for password fields
-        passwordInput.isActivated = true
-        passwordConfirmInput.isActivated = true
-
-        // Show error message
-        errorMessage.text = "Пароли не совпадают"
-        errorMessage.visibility = View.VISIBLE
-    }
-
-    private fun showLoadingDialog() {
+        // All validations passed, register the user
         try {
-            // Create a custom view for the loading dialog
-            val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null) // Use R.layout, not R.drawable
-            val loadingImageView = dialogView.findViewById<ImageView>(R.id.loadingImageView)
+            val userId = dbHelper.addUser(login, email, password)
 
-            // Set up and start the loading animation
-            loadingAnimation = ContextCompat.getDrawable(this, R.drawable.loading_animation) as AnimatedVectorDrawable
-            loadingImageView.setImageDrawable(loadingAnimation)
-            loadingAnimation.start()
+            if (userId != -1L) {
+                // Registration successful
+                errorTextView.visibility = View.GONE
 
-            // Create and show the dialog
-            loadingDialog = AlertDialog.Builder(this)
-                .setView(dialogView)
-                .setCancelable(false)
-                .create()
-
-            loadingDialog.show()
+                // Navigate to main activity
+                val intent = Intent(this, StartActivity::class.java)
+                startActivity(intent)
+                finish() // Close registration activity
+            } else {
+                // Registration failed
+                showError("Ошибка при регистрации. Попробуйте позже.")
+            }
         } catch (e: Exception) {
-            // If there's an error with the loading dialog, just log it and continue
-            // This prevents the app from crashing if there's an issue with the dialog
-            Toast.makeText(this, "Регистрация...", Toast.LENGTH_SHORT).show()
+            Log.e("RegistrationActivity", "Database error: ${e.message}")
+            showError("Ошибка при регистрации. Попробуйте позже.")
         }
     }
 
-    private fun performRegistration() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // Simulate network delay
-                delay(2000)
-
-                withContext(Dispatchers.Main) {
-                    try {
-                        // Only dismiss if the dialog was successfully shown
-                        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
-                            loadingDialog.dismiss()
-                        }
-                    } catch (e: Exception) {
-                        // Ignore any errors when dismissing
-                    }
-
-                    showSuccessDialog()
-                }
-            }
-            catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    try {
-                        // Only dismiss if the dialog was successfully shown
-                        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
-                            loadingDialog.dismiss()
-                        }
-                    } catch (e: Exception) {
-                        // Ignore any errors when dismissing
-                    }
-
-                    showErrorDialog("Произошла ошибка: ${e.message}")
-                }
-            }
-        }
+    private fun resetErrorStates() {
+        errorTextView.visibility = View.GONE
+        loginEditText.setBackgroundResource(R.drawable.edit_text_background)
+        emailEditText.setBackgroundResource(R.drawable.edit_text_background)
+        passwordEditText.setBackgroundResource(R.drawable.edit_text_background)
+        confirmPasswordEditText.setBackgroundResource(R.drawable.edit_text_background)
     }
 
-    private fun showSuccessDialog() {
-        val dialog = AlertDialog.Builder(this)
-            .setMessage("Регистрация прошла успешно!")
-            .setPositiveButton("OK") { _, _ ->
-                navigateToNextScreen()
-            }
-            .setCancelable(false)
-            .create()
-
-        dialog.show()
+    private fun showError(message: String) {
+        errorTextView.text = message
+        errorTextView.visibility = View.VISIBLE
     }
-
-    private fun showErrorDialog(errorMessage: String) {
-        val dialog = AlertDialog.Builder(this)
-            .setMessage(errorMessage)
-            .setPositiveButton("OK", null)
-            .create()
-
-        dialog.show()
-    }
-
-    private fun navigateToNextScreen() {
-        goToMainPage()
-    }
-}
-
-// Extension function for dialog text color
-fun AlertDialog.Builder.setTextColor(color: Int): AlertDialog.Builder {
-    val dialog = this.create()
-    dialog.setOnShowListener {
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(color)
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(color)
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(color)
-    }
-    return this
 }
