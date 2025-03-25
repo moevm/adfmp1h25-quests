@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+//    kotlin("kapt") version "2.5.0"
 }
 
 android {
@@ -15,6 +16,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        kapt {
+//            arguments {arg("room.schemaLocation", "$projectDir/schemas")}
+//        }
     }
 
     buildTypes {
@@ -52,5 +56,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
+    implementation("androidx.room:room-runtime:2.5.0") // Библиотека "Room"
+//    kapt("androidx.room:room-compiler:2.5.0") // Кодогенератор
+    implementation("androidx.room:room-ktx:2.5.0") // Дополнительно для Kotlin Coroutines, Kotlin Flows
 }
